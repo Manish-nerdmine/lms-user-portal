@@ -6,6 +6,10 @@ import Overdue from "./Pages/Overdue";
 import Complete from "./Pages/Complete";
 import { Route, Routes } from "react-router-dom";
 import Setting from "./Pages/Setting";
+import Sign from "./Pages/Signup";
+import LoginPage from "./Pages/Login";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
@@ -21,8 +25,12 @@ const App = () => {
           <Route path="/overdue" element={<Overdue />} />
           <Route path="/complete-training" element={<Complete />} />
           <Route path='/setting' element={<Setting />} />
+          <Route path="/signup" element={<Sign />} />
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
       </main>
+      
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };
