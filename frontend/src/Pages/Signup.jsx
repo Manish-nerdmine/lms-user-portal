@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import { MdEmail, MdWork } from "react-icons/md";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { LuBookOpen } from "react-icons/lu";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,13 +14,35 @@ const Sign = () => {
   const [agree, setAgree] = useState(false);
 
   // form states
-  const [fullName, setFullName] = useState("John Smith");
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("user"); 
+  const [role, setRole] = useState("user");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Prefill form using query params
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+
+    const preName = params.get("name");
+    const preEmail = params.get("email");
+    const preRole = params.get("role");
+
+    if (preName) setFullName(preName);
+    if (preEmail) setEmail(preEmail);
+    if (preRole) setRole(preRole);
+
+    console.log("Prefilled from URL:", {
+      name: preName,
+      email: preEmail,
+      role: preRole,
+    });
+  }, [location.search]);
+
+  //  Handle Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -34,8 +56,6 @@ const Sign = () => {
       email,
       password,
       role,
-      groupId: "657e902c4b628d1f0fc8f09",
-      departmentId: "657e902c4b628d1f0fc8f09",
       isTermsAccepted: agree,
     };
 
@@ -44,7 +64,9 @@ const Sign = () => {
         "http://195.35.21.108:3002/auth/api/v1/employment/signup",
         newUser
       );
+
       console.log("API Response:", res.data);
+
       toast.success("Account created successfully!");
       navigate("/login");
     } catch (error) {
@@ -52,8 +74,9 @@ const Sign = () => {
 
       const msg = error.response?.data?.message;
       if (Array.isArray(msg)) {
-        // Backend returns array of errors
-        toast.error(msg.map((err) => `${err.field || ""}: ${err.error || err}`).join("\n"));
+        toast.error(
+          msg.map((err) => `${err.field || ""}: ${err.error || err}`).join("\n")
+        );
       } else if (typeof msg === "object") {
         toast.error(JSON.stringify(msg));
       } else {
@@ -77,7 +100,9 @@ const Sign = () => {
 
         {/* Form */}
         <form className="p-6 space-y-4" onSubmit={handleSubmit}>
-          <p className="text-xs font-semibold text-gray-500">EMPLOYEE INFORMATION</p>
+          <p className="text-xs font-semibold text-gray-500">
+            EMPLOYEE INFORMATION
+          </p>
 
           {/* Full Name */}
           <div>
@@ -90,6 +115,7 @@ const Sign = () => {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               className="w-full border rounded-lg px-3 py-2 text-sm outline-none"
+              placeholder="Enter your full name"
             />
           </div>
 
@@ -108,23 +134,24 @@ const Sign = () => {
             />
           </div>
 
-          {/* Role Dropdown */}
+          {/* Role as Text Input */}
           <div>
             <label className="flex items-center text-sm font-medium text-gray-700 mb-1 space-x-1">
               <MdWork className="text-gray-500" />
               <span>Role</span>
             </label>
-            <select
+            <input
+              type="text"
               value={role}
               onChange={(e) => setRole(e.target.value)}
+              placeholder="Enter your role (e.g. admin, user, soft)"
               className="w-full border rounded-lg px-3 py-2 text-sm outline-none"
-            >
-              <option value="user">user</option>
-              <option value="admin">admin</option>
-            </select>
+            />
           </div>
 
-          <p className="text-xs font-semibold text-gray-500 mt-6">ACCOUNT SECURITY</p>
+          <p className="text-xs font-semibold text-gray-500 mt-6">
+            ACCOUNT SECURITY
+          </p>
 
           {/* Password */}
           <div>
@@ -210,12 +237,12 @@ const Sign = () => {
           {/* Support */}
           <p className="text-center text-sm text-gray-500 mt-4">
             Already have an account?{" "}
-            <a
+            <span
               onClick={() => navigate("/login")}
               className="text-blue-600 underline cursor-pointer"
             >
               Log in
-            </a>
+            </span>
           </p>
           <p className="text-center text-sm text-gray-500 mt-2">
             Need help?{" "}
