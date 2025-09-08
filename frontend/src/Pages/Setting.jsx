@@ -10,20 +10,42 @@ import {
   Calendar,
   Shield,
   Bell,
+  LogOut,
 } from "lucide-react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Setting() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); 
+    toast.success("Logout successful!");
+    setTimeout(() => navigate("/login"), 1500); 
+  };
+
   return (
     <main className="flex-1 p-6 bg-gray-50">
+      <ToastContainer position="top-right" autoClose={3000} />
+
       {/* Header */}
-      <header className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-          <Settings className="w-6 h-6 text-purple-600" />
-          Settings
-        </h2>
-        <p className="text-gray-500">
-          Manage your account and preferences
-        </p>
+      <header className="mb-6 flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+            <Settings className="w-6 h-6 text-purple-600" />
+            Settings
+          </h2>
+          <p className="text-gray-500">Manage your account and preferences</p>
+        </div>
+        {/* Logout Button */}
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+        >
+          <LogOut className="w-4 h-4" />
+          Logout
+        </button>
       </header>
 
       <div className="space-y-6">
@@ -138,10 +160,26 @@ export default function Setting() {
 
           <div className="space-y-4">
             {[
-              { label: "Email Notifications", desc: "Receive email updates about your training progress", checked: true },
-              { label: "Deadline Reminders", desc: "Get notified when training deadlines are approaching", checked: true },
-              { label: "Weekly Reports", desc: "Receive weekly summaries of your learning activity", checked: false },
-              { label: "Auto-enrollment", desc: "Automatically enroll in required training programs", checked: true },
+              {
+                label: "Email Notifications",
+                desc: "Receive email updates about your training progress",
+                checked: true,
+              },
+              {
+                label: "Deadline Reminders",
+                desc: "Get notified when training deadlines are approaching",
+                checked: true,
+              },
+              {
+                label: "Weekly Reports",
+                desc: "Receive weekly summaries of your learning activity",
+                checked: false,
+              },
+              {
+                label: "Auto-enrollment",
+                desc: "Automatically enroll in required training programs",
+                checked: true,
+              },
             ].map((item, idx) => (
               <div key={idx} className="flex justify-between items-center">
                 <div>
@@ -149,7 +187,11 @@ export default function Setting() {
                   <p className="text-sm text-gray-500">{item.desc}</p>
                 </div>
                 <label className="inline-flex items-center cursor-pointer">
-                  <input type="checkbox" className="hidden peer" defaultChecked={item.checked} />
+                  <input
+                    type="checkbox"
+                    className="hidden peer"
+                    defaultChecked={item.checked}
+                  />
                   <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-purple-600 relative transition">
                     <div className="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 peer-checked:translate-x-5 transition" />
                   </div>
