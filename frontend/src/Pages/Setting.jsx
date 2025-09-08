@@ -102,15 +102,6 @@ export default function Setting() {
               />
             </div>
             <div className="flex items-center border rounded-md px-3 py-2">
-              <Building className="w-4 h-4 text-gray-500 mr-2" />
-              <input
-                type="text"
-                placeholder="Department"
-                defaultValue="Engineering"
-                className="w-full outline-none"
-              />
-            </div>
-            <div className="flex items-center border rounded-md px-3 py-2">
               <Briefcase className="w-4 h-4 text-gray-500 mr-2" />
               <input
                 type="text"
@@ -124,81 +115,6 @@ export default function Setting() {
           <button className="mt-4 bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">
             Save Changes
           </button>
-        </section>
-
-        {/* Quick Actions */}
-        <section className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
-          <div className="space-y-3">
-            <button className="w-full flex items-center justify-between border rounded-md px-4 py-2 hover:bg-gray-50">
-              <span className="flex items-center gap-2">
-                <Download className="w-4 h-4 text-gray-500" />
-                Export Training Data
-              </span>
-            </button>
-            <button className="w-full flex items-center justify-between border rounded-md px-4 py-2 hover:bg-gray-50">
-              <span className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-gray-500" />
-                Sync Calendar
-              </span>
-            </button>
-            <button className="w-full flex items-center justify-between border rounded-md px-4 py-2 hover:bg-gray-50">
-              <span className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-gray-500" />
-                Privacy Settings
-              </span>
-            </button>
-          </div>
-        </section>
-
-        {/* Notifications */}
-        <section className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <Bell className="w-5 h-5 text-purple-600" />
-            Notifications
-          </h3>
-
-          <div className="space-y-4">
-            {[
-              {
-                label: "Email Notifications",
-                desc: "Receive email updates about your training progress",
-                checked: true,
-              },
-              {
-                label: "Deadline Reminders",
-                desc: "Get notified when training deadlines are approaching",
-                checked: true,
-              },
-              {
-                label: "Weekly Reports",
-                desc: "Receive weekly summaries of your learning activity",
-                checked: false,
-              },
-              {
-                label: "Auto-enrollment",
-                desc: "Automatically enroll in required training programs",
-                checked: true,
-              },
-            ].map((item, idx) => (
-              <div key={idx} className="flex justify-between items-center">
-                <div>
-                  <p className="font-medium">{item.label}</p>
-                  <p className="text-sm text-gray-500">{item.desc}</p>
-                </div>
-                <label className="inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="hidden peer"
-                    defaultChecked={item.checked}
-                  />
-                  <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-purple-600 relative transition">
-                    <div className="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 peer-checked:translate-x-5 transition" />
-                  </div>
-                </label>
-              </div>
-            ))}
-          </div>
         </section>
 
         {/* Learning Preferences */}

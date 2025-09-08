@@ -47,9 +47,6 @@ const Overdue = () => {
             {overdueTrainings.length} trainings require immediate attention
           </p>
         </div>
-        <button className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">
-          Contact Support
-        </button>
       </header>
 
       {/* Stats Section */}
@@ -80,13 +77,6 @@ const Overdue = () => {
           placeholder="Search overdue trainings..."
           className="w-full md:w-1/3 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
         />
-        <select className="w-full md:w-1/4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
-          <option>All Categories</option>
-          <option>Security</option>
-          <option>Compliance</option>
-          <option>Safety</option>
-          <option>Development</option>
-        </select>
       </div>
 
       {/* Overdue Training Cards */}

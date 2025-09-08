@@ -63,6 +63,14 @@ const TodoTraining = ({ groupId }) => {
       </header>
 
       {/* Loading / Empty */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-3">
+        <input
+          type="text"
+          placeholder="Search completed trainings..."
+          className="w-full md:w-1/3 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
       {loading ? (
         <p className="text-center text-gray-500">Loading trainings...</p>
       ) : courses.length === 0 ? (
@@ -116,12 +124,6 @@ const TodoTraining = ({ groupId }) => {
                   ></div>
                 </div>
                 <p className="text-xs text-gray-400 mb-3">Progress: 0%</p>
-
-                {/* Extra Info */}
-                <div className="flex justify-between text-xs text-gray-500 mb-3">
-                  <span>🎬 {details.totalVideos} Videos</span>
-                  <span>📝 {details.totalQuizzes} Quizzes</span>
-                </div>
 
                 {/* Due Date */}
                 <p className="text-xs text-gray-400 mb-3">

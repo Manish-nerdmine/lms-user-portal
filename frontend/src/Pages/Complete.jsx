@@ -83,13 +83,6 @@ const Complete = () => {
           placeholder="Search completed trainings..."
           className="w-full md:w-1/3 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
         />
-        <select className="w-full md:w-1/4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
-          <option>All Categories</option>
-          <option>Leadership</option>
-          <option>Development</option>
-          <option>Design</option>
-          <option>Compliance</option>
-        </select>
       </div>
 
       {/* Training Cards */}
