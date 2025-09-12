@@ -10,11 +10,12 @@ import Sign from "./Pages/Signup";
 import LoginPage from "./Pages/Login";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CoursePlayer from "./Pages/videos";
 
 const App = () => {
   // auth state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [groupId,setGoupId]=useState(null);
+  const [groupId, setGoupId] = useState(null);
 
   const location = useLocation();
 
@@ -42,16 +43,23 @@ const App = () => {
         <Routes>
           {/* Public Routes */}
           <Route path="/signup" element={<Sign />} />
-          <Route path="/login" element={<LoginPage setGroupId={setGoupId} groupId={groupId} />} />
+          <Route
+            path="/login"
+            element={<LoginPage setGroupId={setGoupId} groupId={groupId} />}
+          />
 
           {/* Private Routes */}
           {isAuthenticated ? (
             <>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/todo-training" element={<TodoTraning  groupId={groupId} />} />
+              <Route
+                path="/todo-training"
+                element={<TodoTraning groupId={groupId} />}
+              />
               <Route path="/overdue" element={<Overdue />} />
               <Route path="/complete-training" element={<Complete />} />
               <Route path="/setting" element={<Setting />} />
+              <Route path="/videos/:courseId" element={<CoursePlayer />} />
             </>
           ) : (
             <Route path="*" element={<Navigate to="/signup" replace />} />
@@ -59,7 +67,7 @@ const App = () => {
         </Routes>
       </main>
 
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right"  />
     </div>
   );
 };

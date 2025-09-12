@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const TodoTraining = ({ groupId }) => {
   const [courses, setCourses] = useState([]);
@@ -35,17 +36,19 @@ const TodoTraining = ({ groupId }) => {
             },
           }
         );
-
+        console.log("Fetched courses:", res);
         setCourses(res.data.courses || []);
       } catch (err) {
         console.error("Error fetching courses:", err);
       } finally {
         setLoading(false);
-      }
+      } 
     };
 
     fetchGroupCourses();
   }, [gid]);
+
+  const navigate = useNavigate();
 
   return (
     <main className="flex-1 p-6 bg-gray-50 min-h-screen">
@@ -57,9 +60,6 @@ const TodoTraining = ({ groupId }) => {
             {courses.length} trainings to complete
           </p>
         </div>
-        <button className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">
-          Browse More
-        </button>
       </header>
 
       {/* Loading / Empty */}
@@ -131,7 +131,7 @@ const TodoTraining = ({ groupId }) => {
                 </p>
 
                 {/* Button */}
-                <button className="w-full bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">
+                <button className="w-full bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700" onClick={()=>navigate(`/videos/${c.courseId}`)}>
                   Start Training
                 </button>
               </div>
