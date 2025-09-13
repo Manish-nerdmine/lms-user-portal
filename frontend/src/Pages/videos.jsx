@@ -11,76 +11,84 @@ const modules = [
 export default function CoursePlayer() {
   const [activeModule, setActiveModule] = useState(modules[2]);
 
+  const completedCount = modules.filter((m) => m.completed).length;
+  const progress = (completedCount / modules.length) * 100;
+
   return (
-    <div className="max-w-4xl mx-auto mt-8 p-4 bg-white shadow-lg rounded-lg">
+    <div className="h-screen w-full flex flex-col bg-gray-100">
       {/* Header */}
-      <h1 className="text-2xl font-bold">Introduction to Web Development</h1>
-      <p className="text-gray-600">4 modules | Instructor: Sarah Johnson</p>
-
-      <div className="flex mt-6 gap-4">
-        {/* Sidebar */}
-        <div className="w-1/3">
-          <p className="text-sm font-semibold mb-2">Course Modules</p>
-          {/* Progress Bar */}
-          <div className="w-full bg-gray-200 h-2 rounded mb-4">
+      <header className="px-6 py-4 bg-white shadow flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">Introduction to Web Development</h1>
+          <p className="text-gray-600 text-sm">{modules.length} modules</p>
+        </div>
+        <div className="w-48">
+          <div className="w-full bg-gray-200 h-2 rounded-full">
             <div
-              className="bg-blue-600 h-2 rounded"
-              style={{ width: "66%" }}
-            ></div>
+              className="bg-blue-600 h-2 rounded-full transition-all"
+              style={{ width: `${progress}%` }}
+            />
           </div>
+          <p className="text-xs text-gray-500 mt-1">
+            {completedCount}/{modules.length} Completed
+          </p>
+        </div>
+      </header>
 
+      {/* Main Section */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar */}
+        <aside className="w-72 bg-white shadow-md p-4 overflow-y-auto">
+          <h2 className="text-sm font-semibold mb-3">Course Modules</h2>
           <div className="flex flex-col gap-2">
             {modules.map((mod) => (
               <button
                 key={mod.id}
                 onClick={() => setActiveModule(mod)}
-                className={`flex justify-between items-center px-3 py-2 rounded-md border ${
+                className={`flex justify-between items-center px-3 py-2 rounded-md border transition ${
                   activeModule.id === mod.id
-                    ? "bg-blue-600 text-white"
+                    ? "bg-blue-600 text-white shadow"
                     : "bg-gray-50 hover:bg-gray-100"
                 }`}
               >
                 <div className="text-left">
                   <p className="text-sm font-medium">{mod.title}</p>
-                  <p className="text-xs text-gray-500">{mod.duration}</p>
+                  <p className="text-xs opacity-70">{mod.duration}</p>
                 </div>
-                {mod.completed && <span className="text-green-500">✔</span>}
+                {mod.completed && <span className="text-green-500 font-bold">✔</span>}
               </button>
             ))}
           </div>
-        </div>
+        </aside>
 
         {/* Main Video + Content */}
-        <div className="w-2/3">
+        <main className="flex-1 p-6 overflow-y-auto">
           {/* Video Player */}
-          <YouTube
-            videoId={activeModule.videoId}
-            className="w-full rounded-lg overflow-hidden"
-            opts={{
-              width: "100%",
-              height: "300",
-              playerVars: { autoplay: 0 },
-            }}
-          />
+          <div className="aspect-video w-full rounded-lg overflow-hidden shadow">
+            <YouTube
+              videoId={activeModule.videoId}
+              className="w-full h-full"
+              opts={{
+                width: "100%",
+                height: "100%",
+                playerVars: { autoplay: 0 },
+              }}
+            />
+          </div>
 
-          {/* Tabs */}
-          <div className="mt-4">
-            <div className="flex border-b">
+          {/* Tabs + Content */}
+          <div className="mt-6 bg-white rounded-lg shadow p-4">
+            <div className="flex border-b mb-4">
               <button className="px-4 py-2 text-sm font-medium border-b-2 border-blue-600">
                 Content
               </button>
             </div>
-            <div className="p-4">
-              <h2 className="text-lg font-semibold">{activeModule.title}</h2>
-              <p className="text-gray-600">
-                Understand variables, functions, and DOM manipulation.
-              </p>
-              <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">
-                Mark as Complete
-              </button>
-            </div>
+            <h2 className="text-lg font-semibold mb-2">{activeModule.title}</h2>
+            <p className="text-gray-600">
+              Understand variables, functions, and DOM manipulation with examples.
+            </p>
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );
