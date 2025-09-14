@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Settings, User, Mail, Briefcase, X } from "lucide-react";
+import { Settings, User, Mail, Briefcase } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +7,6 @@ import { FaKey } from "react-icons/fa";
 
 export default function Setting() {
   const navigate = useNavigate();
-  const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -25,7 +24,6 @@ export default function Setting() {
     setOldPassword("");
     setNewPassword("");
     setConfirmPassword("");
-    setShowPasswordForm(false);
   };
 
   return (
@@ -76,72 +74,56 @@ export default function Setting() {
                 className="w-full outline-none"
               />
             </div>
-            <div
-              onClick={() => setShowPasswordForm(!showPasswordForm)}
-              className="flex items-center border rounded-md px-3 py-2 shadow-sm cursor-pointer hover:bg-gray-50 transition"
-            >
-              <FaKey className="w-4 h-4 text-blue-800 mr-2" />
-              <p className="text-blue-800 font-medium">Change Password</p>
-            </div>
           </div>
 
-          {/* Change Password Form */}
-          {showPasswordForm && (
-            <div className="relative mt-6 bg-gray-50 p-4 rounded-lg border shadow-inner space-y-4 animate-fadeIn">
-              {/* Close Button */}
-              <button
-                onClick={() => setShowPasswordForm(false)}
-                className="absolute top-3 right-3 text-gray-500 hover:text-red-500 transition"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <div className="m=0 gap-2">
-                <p className="text-md font-semibold text-gray-700 flex items-center gap-2 text-2xl">
-                  <FaKey className="text-blue-600" /> Security Settings
-                </p>
-                <p className="text-gray-600 m-0">
-                  Update your password and security settings
-                </p>
-              </div>
-
-              <input
-                type="password"
-                placeholder="Old Password"
-                value={oldPassword}
-                onChange={(e) => setOldPassword(e.target.value)}
-                className="border rounded-md px-3 py-2 w-full shadow-sm focus:ring-2 focus:ring-purple-500 outline-none"
-              />
-              <input
-                type="password"
-                placeholder="New Password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="border rounded-md px-3 py-2 w-full shadow-sm focus:ring-2 focus:ring-purple-500 outline-none"
-              />
-              <input
-                type="password"
-                placeholder="Confirm New Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="border rounded-md px-3 py-2 w-full shadow-sm focus:ring-2 focus:ring-purple-500 outline-none"
-              />
-
-              {/* Button ko right align */}
-              <div className="flex justify-end">
-                <button
-                  onClick={handleChangePassword}
-                  className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow transition"
-                >
-                  Update Password
-                </button>
-              </div>
-            </div>
-          )}
-
+          {/* Save Changes Button */}
           <button className="mt-6 bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow">
             Save Changes
           </button>
+
+          {/* Change Password Form - Always Open */}
+          <div className="mt-8 bg-gray-50 p-4 rounded-lg border shadow-inner space-y-4">
+            <div>
+              <p className="text-md font-semibold text-gray-700 flex items-center gap-2 text-2xl">
+                <FaKey className="text-blue-600" /> Password Settings
+              </p>
+              <p className="text-gray-600 m-0">
+                Update your password 
+              </p>
+            </div>
+
+            <input
+              type="password"
+              placeholder="Old Password"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+              className="border rounded-md px-3 py-2 w-full shadow-sm focus:ring-2 focus:ring-purple-500 outline-none"
+            />
+            <input
+              type="password"
+              placeholder="New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="border rounded-md px-3 py-2 w-full shadow-sm focus:ring-2 focus:ring-purple-500 outline-none"
+            />
+            <input
+              type="password"
+              placeholder="Confirm New Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="border rounded-md px-3 py-2 w-full shadow-sm focus:ring-2 focus:ring-purple-500 outline-none"
+            />
+
+            {/* Button Right Align */}
+            <div className="flex justify-end">
+              <button
+                onClick={handleChangePassword}
+                className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow transition"
+              >
+                Update Password
+              </button>
+            </div>
+          </div>
         </section>
       </div>
     </main>
