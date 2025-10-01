@@ -16,6 +16,7 @@ const App = () => {
   // auth state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [groupId, setGoupId] = useState(null);
+  const [overdueCourses, setOverdueCourses] = useState([]); 
 
   const location = useLocation();
 
@@ -54,11 +55,11 @@ const App = () => {
               <Route path="/" element={<Dashboard />} />
               <Route
                 path="/todo-training"
-                element={<TodoTraning groupId={groupId} />}
+                element={<TodoTraning groupId={groupId} overdueCourses={overdueCourses} setOverdueCourses={setOverdueCourses} />}
               />
-              <Route path="/overdue" element={<Overdue />} />
+              <Route path="/overdue" element={<Overdue  overdueCourses={overdueCourses} />} />
               <Route path="/complete-training" element={<Complete />} />
-              <Route path="/setting" element={<Setting />} />
+              <Route path="/settings" element={<Setting />} />
               <Route path="/videos/:courseId" element={<CoursePlayer />} />
             </>
           ) : (

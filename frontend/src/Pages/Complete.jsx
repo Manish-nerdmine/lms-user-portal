@@ -97,8 +97,6 @@ const Complete = () => {
             </div>
             <p className="text-sm text-gray-500 mb-2">{t.desc}</p>
             <div className="flex justify-between text-xs text-gray-500 mb-2">
-              <span>👤 {t.author}</span>
-              <span>⏱ {t.duration}</span>
             </div>
             <p className="text-xs text-gray-400 mb-3">
               📅 Completed on {t.completed}

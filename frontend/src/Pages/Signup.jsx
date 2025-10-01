@@ -65,7 +65,7 @@ const Sign = () => {
         newUser
       );
 
-      console.log("API Response:", res.data);
+      console.log("API Response:", res.data.employment);
 
       toast.success("Account created successfully!");
       navigate("/login");

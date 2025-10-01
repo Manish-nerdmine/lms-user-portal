@@ -23,6 +23,7 @@ const LoginPage = ({ setGroupId , groupId }) => {
       );
 
       console.log(" Login Success:", response.data);
+      console.log(" Login Success:", response.data.employment);
 
       if (response.data?.token) {
         localStorage.setItem("token", response.data.token);
@@ -31,6 +32,7 @@ const LoginPage = ({ setGroupId , groupId }) => {
       console.log(response.data);
       setGroupId(response.data?.groupId);
       toast.success("Login successful!");
+      localStorage.setItem("eId", response.data.employment);
       setTimeout(() => navigate("/"), 1500);
     } catch (err) {
       console.error(" Login Error:", err);
