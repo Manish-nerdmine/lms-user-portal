@@ -12,7 +12,7 @@
   "dependencies": {
     "@auth0/auth0-react": "^2.3.0",
     "@clerk/clerk-react": "^5.25.6",
-    "axios": "^1.8.4",
+    "axios": "^1.12.2",
     "bootstrap": "^5.3.3",
     "firebase": "^11.6.0",
     "humanize-duration": "^3.32.1",

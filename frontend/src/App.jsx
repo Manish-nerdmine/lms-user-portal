@@ -33,7 +33,7 @@ const App = () => {
   return (
     <div className="flex bg-gray-100 min-h-screen">
       {/* Sidebar */}
-      {showSidebar && <Sidebar />}
+      {showSidebar  && <Sidebar />}
 
       {/* Main Content */}
       <main
@@ -44,6 +44,7 @@ const App = () => {
         <Routes>
           {/* Public Routes */}
           <Route path="/signup" element={<Sign />} />
+          <Route path="/auth/signup" element={<Sign />} />
           <Route
             path="/login"
             element={<LoginPage setGroupId={setGoupId} groupId={groupId} />}
@@ -59,7 +60,7 @@ const App = () => {
               />
               <Route path="/overdue" element={<Overdue  overdueCourses={overdueCourses} />} />
               <Route path="/complete-training" element={<Complete />} />
-              <Route path="/settings" element={<Setting />} />
+              <Route path="/setting" element={<Setting />} />
               <Route path="/videos/:courseId" element={<CoursePlayer />} />
             </>
           ) : (

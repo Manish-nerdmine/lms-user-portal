@@ -8,50 +8,71 @@ import axios from "axios";
 
 export default function Setting() {
   const navigate = useNavigate();
-  const gId = localStorage.getItem("groupId");
-  const userTypesinUpdate = "67f92394d8650ede1e19015f";
+  const gId= localStorage.getItem("groupId");
+  const userTypesinUpdate='67f92394d8650ede1e19015f';
 
   // Profile States
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [jobTitle, setJobTitle] = useState("User");
+  const [jobTitle, setJobTitle] = useState("");
 
   // Password States
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  // Loader State
-  const [loading, setLoading] = useState(false);
-
   // Fetch profile data on component mount
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const uId = localStorage.getItem("uId");
-        if (!uId) return;
+useEffect(() => {
+  const fetchProfile = async () => {
+    try {
+      const eId = localStorage.getItem("eId");
+      console.log("Fetching profile for eId:", eId);
+      const uId= localStorage.getItem("uId");
+      console.log("Using uId:", uId);
+      console.log("Using gId:", gId);
+      console.log("Using userTypesinUpdate:", userTypesinUpdate);
 
-        const response = await axios.get(
-          `http://195.35.21.108:3002/auth/api/v1/users/${uId}`
-        );
-        const employment = response.data;
-
-        if (employment) {
-          setFullName(employment.fullName || "");
-          setEmail(employment.email || "");
-          setJobTitle(employment.userType || "User");
-        }
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-        toast.error("Failed to load profile data!");
+      // 1. Fetch current user's employment profile (optional, as before)
+      const response = await axios.get(
+        `http://195.35.21.108:3002/auth/api/v1/users/${uId}`
+      );
+      const employment = response.data;
+      console.log("Employment Profile Response:", employment);
+      if (employment) {
+        setFullName(employment.fullName || "");
+        setEmail(employment.email || "");
+        setJobTitle(employment.userType || "");
       }
-    };
 
-    fetchProfile();
-  }, []);
+      // 2. Fetch all users
+      const allUsersRes = await axios.get(
+        "http://195.35.21.108:3002/auth/api/v1/users/all?page=1&limit=1000000000000000000"
+      );
+      const allUsers = allUsersRes.data.users || [];
 
-  // Save Profile Info (Call API)
-  const handleSaveProfile = async () => {
+      // 3. Find the user whose email matches the logged-in email
+      const matchedUser = allUsers.find((user) => user.email === employment.email);
+
+      if (matchedUser) {
+        console.log("Matched User Full Data:", matchedUser);
+        console.log("Matched User ID:", matchedUser._id);
+        localStorage.setItem("uId", matchedUser._id);
+        console.log("Stored uId in localStorage:", localStorage.getItem("uId"));
+      } else {
+        console.log("No user matched with email:", employment.email);
+      }
+    } catch (error) {
+      console.error("Error fetching profile or users:", error);
+      toast.error("Failed to load profile data!");
+    }
+  };
+
+  fetchProfile();
+}, []);
+
+
+  // Save Profile Info
+const handleSaveProfile = async () => {
     const uId = localStorage.getItem("uId");
     if (!fullName || !email || !jobTitle) {
       toast.error("Please fill all profile fields");
@@ -63,8 +84,6 @@ export default function Setting() {
     }
 
     try {
-      setLoading(true);
-
       const payload = {
         userType: userTypesinUpdate,
         fullName: fullName,
@@ -83,8 +102,6 @@ export default function Setting() {
       console.error("Error updating profile:", error);
       const msg = error.response?.data?.message || "Failed to update profile!";
       toast.error(Array.isArray(msg) ? msg.join("\n") : msg);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -149,7 +166,7 @@ export default function Setting() {
               <Briefcase className="w-4 h-4 text-gray-500 mr-2" />
               <input
                 type="text"
-                placeholder="Role"
+                placeholder="Job Title"
                 value="User"
                 onChange={(e) => setJobTitle(e.target.value)}
                 className="w-full outline-none"
@@ -158,11 +175,9 @@ export default function Setting() {
           </div>
 
           <button
-            onClick={handleSaveProfile}
-            disabled={loading}
-            className="mt-6 bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow disabled:opacity-50"
+            className="mt-6 bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow"
           >
-            {loading ? "Saving..." : "Save Changes"}
+            Save Changes
           </button>
 
           {/* Password Settings */}
@@ -209,4 +224,4 @@ export default function Setting() {
       </div>
     </main>
   );
-}
+} 
