@@ -11,31 +11,45 @@ import LoginPage from "./Pages/Login";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CoursePlayer from "./Pages/videos";
+import Certificates from "./Pages/Certificates";
 
 const App = () => {
-  // auth state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [groupId, setGoupId] = useState(null);
-  const [overdueCourses, setOverdueCourses] = useState([]); 
+  const [overdueCourses, setOverdueCourses] = useState([]);
+  const [loading, setLoading] = useState(true); //  added loading state
 
   const location = useLocation();
 
-  // check login token in localStorage
   useEffect(() => {
     const token = localStorage.getItem("token");
-    setIsAuthenticated(!!token);
+
+    if (token) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+
+    setLoading(false); //  stop loading after token check
   }, [location]);
 
   const hideSidebarRoutes = ["/login", "/signup"];
   const showSidebar =
     isAuthenticated && !hideSidebarRoutes.includes(location.pathname);
 
+  if (loading) {
+    // 👇 Show loader (to avoid early redirect)
+    return (
+      <div className="flex items-center justify-center h-screen text-xl font-semibold text-gray-700">
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <div className="flex bg-gray-100 min-h-screen">
-      {/* Sidebar */}
-      {showSidebar  && <Sidebar />}
+      {showSidebar && <Sidebar />}
 
-      {/* Main Content */}
       <main
         className={`flex-1 p-6 md:mt-5 sm:mt-5 ${
           showSidebar ? "lg:mt-0 lg:ml-64" : ""
@@ -56,12 +70,22 @@ const App = () => {
               <Route path="/" element={<Dashboard />} />
               <Route
                 path="/todo-training"
-                element={<TodoTraning groupId={groupId} overdueCourses={overdueCourses} setOverdueCourses={setOverdueCourses} />}
+                element={
+                  <TodoTraning
+                    groupId={groupId}
+                    overdueCourses={overdueCourses}
+                    setOverdueCourses={setOverdueCourses}
+                  />
+                }
               />
-              <Route path="/overdue" element={<Overdue  overdueCourses={overdueCourses} />} />
+              <Route
+                path="/overdue"
+                element={<Overdue overdueCourses={overdueCourses} />}
+              />
               <Route path="/complete-training" element={<Complete />} />
               <Route path="/setting" element={<Setting />} />
               <Route path="/videos/:courseId" element={<CoursePlayer />} />
+              <Route path="/certificates" element={<Certificates />} />
             </>
           ) : (
             <Route path="*" element={<Navigate to="/signup" replace />} />
@@ -69,7 +93,7 @@ const App = () => {
         </Routes>
       </main>
 
-      <ToastContainer position="top-right"  />
+      <ToastContainer position="top-right" />
     </div>
   );
 };
