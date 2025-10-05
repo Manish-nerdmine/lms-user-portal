@@ -12,6 +12,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CoursePlayer from "./Pages/videos";
 import Certificates from "./Pages/Certificates";
+import Certificate from "./Components/Certificate";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -85,7 +86,7 @@ const App = () => {
               <Route path="/complete-training" element={<Complete />} />
               <Route path="/setting" element={<Setting />} />
               <Route path="/videos/:courseId" element={<CoursePlayer />} />
-              <Route path="/certificates" element={<Certificates />} />
+              <Route path="/certificates" element={<Certificates  overdueCourses={overdueCourses}/>} />
             </>
           ) : (
             <Route path="*" element={<Navigate to="/signup" replace />} />
