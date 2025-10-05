@@ -23,10 +23,10 @@ const Sidebar = () => {
   const location = useLocation();
   const [open, setOpen] = useState(false);
 
-    const handleLogout = () => {
-    localStorage.removeItem("token"); 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
     toast.success("Logout successful!");
-    setTimeout(() => navigate("/login"), 1500); 
+    setTimeout(() => navigate("/login"), 1500);
   };
 
   const isActive = (path) =>
@@ -75,7 +75,7 @@ const Sidebar = () => {
               "/complete-training"
             )}`}
           >
-            <FiCheckCircle className="mr-2" /> Complete Training
+            <FiCheckCircle className="mr-2" /> Completed Training
           </p>
           <p
             onClick={() => navigate("/setting")}
@@ -151,8 +151,10 @@ const Sidebar = () => {
                 "/complete-training"
               )}`}
             >
-              <FiCheckCircle className="mr-2" /> Complete Training
+              <FiCheckCircle className="mr-2" /> Completed Training
             </p>
+
+
             <p
               onClick={() => {
                 navigate("/setting");
@@ -164,12 +166,12 @@ const Sidebar = () => {
             >
               <FiSettings className="mr-2" /> Settings
             </p>
-          <p
-            onClick={handleLogout}
-            className={`cursor-pointer flex items-center px-3 py-2 hover:bg-gray-800`}
-          >
-            <LogOut className="mr-2" /> Logout
-          </p>
+            <p
+              onClick={handleLogout}
+              className={`cursor-pointer flex items-center px-3 py-2 hover:bg-gray-800`}
+            >
+              <LogOut className="mr-2" /> Logout
+            </p>
           </div>
         )}
       </div>

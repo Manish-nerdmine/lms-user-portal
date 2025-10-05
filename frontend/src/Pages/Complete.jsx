@@ -71,9 +71,6 @@ const Complete = () => {
             {completedTrainings.length} trainings completed
           </p>
         </div>
-        <button className="bg-green-100 text-green-600 px-4 py-2 rounded-md border border-green-300 hover:bg-green-200">
-          Export Certificates
-        </button>
       </header>
 
       {/* Search & Filter */}

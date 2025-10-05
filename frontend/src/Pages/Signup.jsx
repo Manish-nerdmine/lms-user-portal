@@ -16,7 +16,7 @@ const Sign = () => {
   // form states
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("user");
+  const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -113,7 +113,7 @@ const Sign = () => {
             <input
               type="text"
               value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              readOnly
               className="w-full border rounded-lg px-3 py-2 text-sm outline-none"
               placeholder="Enter your full name"
             />
@@ -128,7 +128,7 @@ const Sign = () => {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              readOnly
               placeholder="john.smith@company.com"
               className="w-full border rounded-lg px-3 py-2 text-sm outline-none"
             />
@@ -143,7 +143,7 @@ const Sign = () => {
             <input
               type="text"
               value={role}
-              onChange={(e) => setRole(e.target.value)}
+              readOnly
               placeholder="Enter your role (e.g. admin, user, soft)"
               className="w-full border rounded-lg px-3 py-2 text-sm outline-none"
             />

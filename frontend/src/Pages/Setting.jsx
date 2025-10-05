@@ -176,6 +176,7 @@ const handleSaveProfile = async () => {
 
           <button
             className="mt-6 bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow"
+            onClick={handleSaveProfile}
           >
             Save Changes
           </button>
