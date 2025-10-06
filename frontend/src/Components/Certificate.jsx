@@ -26,7 +26,7 @@ export default function Certificate() {
 
           {/* Name */}
           <h2 className="text-4xl font-extrabold text-indigo-800 italic mb-6 underline">
-            Rajnish Kumar
+            {localStorage.getItem("fullName")}
           </h2>
 
           {/* Course Details */}

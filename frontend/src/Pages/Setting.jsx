@@ -16,6 +16,7 @@ export default function Setting() {
   const [email, setEmail] = useState("");
   const [jobTitle, setJobTitle] = useState("");
 
+
   // Password States
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -42,6 +43,8 @@ useEffect(() => {
         setFullName(employment.fullName || "");
         setEmail(employment.email || "");
         setJobTitle(employment.userType || "");
+        localStorage.setItem("fullName",employment.fullName);
+        console.log(localStorage.getItem("fullName"));
       }
 
       // 2. Fetch all users
