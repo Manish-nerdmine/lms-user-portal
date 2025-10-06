@@ -11,6 +11,7 @@ const Overdue = ({ overdueCourses }) => {
           <p className="text-sm text-gray-500">
             {overdueCourses.length} trainings require immediate attention
           </p>
+          
         </div>
       </header>
 
