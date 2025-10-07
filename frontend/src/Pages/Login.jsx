@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
-const LoginPage = ({ setGroupId , groupId }) => {
+const LoginPage = ({ setGroupId , groupId,setIsAuthenticated }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -27,6 +27,7 @@ const LoginPage = ({ setGroupId , groupId }) => {
 
       if (response.data?.token) {
         localStorage.setItem("token", response.data.token);
+        setIsAuthenticated(true);
       }
 
       console.log(response.data);

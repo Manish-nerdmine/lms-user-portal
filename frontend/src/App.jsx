@@ -62,7 +62,7 @@ const App = () => {
           <Route path="/auth/signup" element={<Sign />} />
           <Route
             path="/login"
-            element={<LoginPage setGroupId={setGoupId} groupId={groupId} />}
+            element={<LoginPage setGroupId={setGoupId} groupId={groupId} setIsAuthenticated={setIsAuthenticated}/>}
           />
 
           {/* Private Routes */}
