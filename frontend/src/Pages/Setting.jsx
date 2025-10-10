@@ -10,6 +10,7 @@ export default function Setting() {
   const navigate = useNavigate();
   const gId= localStorage.getItem("groupId");
   const userTypesinUpdate='67f92394d8650ede1e19015f';
+  const userId=localStorage.getItem("userId");
 
   // Profile States
   const [fullName, setFullName] = useState("");
@@ -31,11 +32,13 @@ useEffect(() => {
       const uId= localStorage.getItem("uId");
       console.log("Using uId:", uId);
       console.log("Using gId:", gId);
+      console.log("eid:", eId); 
+      console.log(localStorage.getItem("userId"));
       console.log("Using userTypesinUpdate:", userTypesinUpdate);
 
       // 1. Fetch current user's employment profile (optional, as before)
       const response = await axios.get(
-        `http://195.35.21.108:3002/auth/api/v1/users/${uId}`
+        `http://195.35.21.108:3002/auth/api/v1/users/${userId}`
       );
       const employment = response.data;
       console.log("Employment Profile Response:", employment);
@@ -95,7 +98,7 @@ const handleSaveProfile = async () => {
       };
 
       const updateRes = await axios.put(
-        `http://195.35.21.108:3002/auth/api/v1/users/${uId}`,
+        `http://195.35.21.108:3002/auth/api/v1/users/${userId}`,
         payload
       );
 
