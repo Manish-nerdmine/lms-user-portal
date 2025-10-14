@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
-const LoginPage = () => {
+const LoginPage = ({ setGroupId , groupId,setIsAuthenticated }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -23,13 +23,20 @@ const LoginPage = () => {
       );
 
       console.log(" Login Success:", response.data);
+      console.log(" Login Success:", response.data.employment);
 
       if (response.data?.token) {
         localStorage.setItem("token", response.data.token);
+        setIsAuthenticated(true);
       }
 
+      console.log(response.data);
+      setGroupId(response.data?.groupId);
       toast.success("Login successful!");
-      setTimeout(() => navigate("/"), 1500); 
+      localStorage.setItem("eId", response.data.employment);
+      localStorage.setItem("employment", response.data.employment);
+      localStorage.setItem("userId", response.data.userId);
+      setTimeout(() => navigate("/"), 1500);
     } catch (err) {
       console.error(" Login Error:", err);
       const msg = err.response?.data?.message || "Login failed! Please try again.";
