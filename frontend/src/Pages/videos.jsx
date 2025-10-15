@@ -34,6 +34,24 @@ export default function CoursePlayer() {
   });
 
   const [quizSelections, setQuizSelections] = useState({});
+  const [newtitle, setNewTitle] = useState("");
+
+  useEffect(() => {
+    const tit = async () => {
+      const res = await axios.get(
+        `http://195.35.21.108:3002/auth/api/v1/courses/${courseId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      
+        console.log("tit",res.data.title);
+        setNewTitle(res.data.title);
+    };
+    tit();
+  }, [videos, quizzes]);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -164,9 +182,9 @@ export default function CoursePlayer() {
       {/* Header */}
       <header className="px-6 py-4 bg-white shadow flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Course Player</h1>
+          <h1 className="text-2xl font-bold">{newtitle}</h1>
           <p className="text-gray-600 text-sm">
-            Total Videos: {videos.length} videos 
+            Total Videos: {videos.length} videos
           </p>
         </div>
         <div className="w-48">

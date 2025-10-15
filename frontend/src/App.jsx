@@ -85,7 +85,7 @@ const App = () => {
               <Route path="/complete-training" element={<Complete completedTrainings={completedCourses}/>} /> 
               <Route path="/setting" element={<Setting />} /> 
               <Route path="/videos/:courseId" element={<CoursePlayer />} /> 
-              <Route path="/certificates" element={<Certificates overdueCourses={overdueCourses}/>} /> 
+              <Route path="/certificates" element={<Certificates overdueCourses={completedCourses}/>} /> 
             </> 
           ) : ( 
             <Route path="*" element={<Navigate to="/signup" replace />} /> 
