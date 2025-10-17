@@ -5,6 +5,7 @@ import YouTube from "react-youtube";
 import { toast } from "react-toastify";
 import { Clock } from "lucide-react";
 
+
 export default function CoursePlayer() {
   const { courseId } = useParams();
   const userId = localStorage.getItem("userId"); // currently logged-in user
