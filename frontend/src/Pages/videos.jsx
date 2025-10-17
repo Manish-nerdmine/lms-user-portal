@@ -8,12 +8,14 @@ import { Clock } from "lucide-react";
 export default function CoursePlayer() {
   const { courseId } = useParams();
   const userId = localStorage.getItem("userId"); // currently logged-in user
+  const employmentId = localStorage.getItem("employment");
 
   const [videos, setVideos] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
   const [activeItem, setActiveItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [videoDurations, setVideoDurations] = useState({}); // { videoId: durationInSeconds }
 
   // Keys for localStorage with userId + courseId
   const videoKey = `completedVideos_${userId}_${courseId}`;
@@ -37,7 +39,7 @@ export default function CoursePlayer() {
 
   const [quizSelections, setQuizSelections] = useState({});
   const [newtitle, setNewTitle] = useState("");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const tit = async () => {
@@ -70,6 +72,8 @@ export default function CoursePlayer() {
             },
           }
         );
+
+        console.log(resVideos.data);
 
         const videoData = Array.isArray(resVideos.data)
           ? resVideos.data.map((v) => ({
@@ -112,7 +116,8 @@ export default function CoursePlayer() {
     fetchContent();
   }, [courseId]);
 
-  const handleVideoComplete = (videoId) => {
+  const handleVideoComplete = async (videoId) => {
+    // Step 1: Update UI & localStorage immediately (user ka progress visible rahe)
     const updatedVideos = videos.map((v) =>
       v._id === videoId ? { ...v, isCompleted: true } : v
     );
@@ -122,6 +127,46 @@ export default function CoursePlayer() {
     setCompletedVideos(newCompleted);
     localStorage.setItem(videoKey, JSON.stringify(newCompleted));
 
+    // Step 2: Call backend API safely
+    try {
+      await axios.post(
+        `http://195.35.21.108:3002/auth/api/v1/employment/${employmentId}/mark-video-complete`,
+        {
+          courseId: courseId,
+          videoId: videoId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      toast.success(" Video marked as complete on server!");
+      console.log("Video completion successfully sent to backend ");
+    } catch (err) {
+      console.error(" Error marking video complete:", err);
+      toast.warning(" Internet issue — progress saved locally.");
+
+      // Step 3: Store failed API call for retry
+      const failedCalls = JSON.parse(
+        localStorage.getItem("failedVideoCompletions") || "[]"
+      );
+
+      failedCalls.push({
+        courseId,
+        videoId,
+        timestamp: new Date().toISOString(),
+      });
+
+      localStorage.setItem(
+        "failedVideoCompletions",
+        JSON.stringify(failedCalls)
+      );
+    }
+
+    // Step 4: Check full course completion (frontend logic)
     checkCourseCompletion(updatedVideos, completedQuizzes);
   };
 
@@ -182,6 +227,24 @@ export default function CoursePlayer() {
         {error}
       </div>
     );
+
+  const totalVideoDuration = Object.values(videoDurations).reduce(
+    (acc, d) => acc + d,
+    0
+  );
+
+  const formatDuration = (totalSeconds) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = Math.floor(totalSeconds % 60);
+    return `${hours > 0 ? hours + "h " : ""}${minutes}m ${seconds}s`;
+  };
+
+  console.log("durations:-", formatDuration(totalVideoDuration));
+  localStorage.setItem(
+    `totalVideoDuration_${userId}_${courseId}`,
+    formatDuration(totalVideoDuration)
+  );
 
   return (
     <div className="h-screen w-full flex flex-col bg-gray-100">
@@ -282,9 +345,16 @@ export default function CoursePlayer() {
                       opts={{
                         width: "100%",
                         height: "100%",
-                        playerVars: { autoplay: 1, controls:0,disablekb:1 },
+                        playerVars: { autoplay: 1, controls: 1 },
                       }}
                       className="w-full h-full"
+                      onReady={(e) => {
+                        const duration = e.target.getDuration(); // seconds
+                        setVideoDurations((prev) => ({
+                          ...prev,
+                          [activeItem._id]: duration,
+                        }));
+                      }}
                       onEnd={() => handleVideoComplete(activeItem._id)}
                     />
                   ) : (
@@ -295,6 +365,13 @@ export default function CoursePlayer() {
                       className="w-full h-full object-cover"
                       src={activeItem.videoUrl}
                       poster={activeItem.thumbnail || ""}
+                      onLoadedMetadata={(e) => {
+                        const duration = e.target.duration; // seconds
+                        setVideoDurations((prev) => ({
+                          ...prev,
+                          [activeItem._id]: duration,
+                        }));
+                      }}
                       onEnded={() => handleVideoComplete(activeItem._id)}
                       onSeeked={(e) => {
                         if (

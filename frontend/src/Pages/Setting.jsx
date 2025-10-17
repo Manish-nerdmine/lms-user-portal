@@ -8,15 +8,15 @@ import axios from "axios";
 
 export default function Setting() {
   const navigate = useNavigate();
-  const gId= localStorage.getItem("groupId");
-  const userTypesinUpdate='67f92394d8650ede1e19015f';
-  const userId=localStorage.getItem("userId");
+  const gId = localStorage.getItem("groupId");
+  const userTypesinUpdate = "67f92394d8650ede1e19015f";
+  const userId = localStorage.getItem("userId");
+  const eId = localStorage.getItem("eId"); // Employment ID for password update
 
   // Profile States
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [jobTitle, setJobTitle] = useState("");
-
 
   // Password States
   const [oldPassword, setOldPassword] = useState("");
@@ -24,66 +24,56 @@ export default function Setting() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   // Fetch profile data on component mount
-useEffect(() => {
-  const fetchProfile = async () => {
-    try {
-      const eId = localStorage.getItem("eId");
-      console.log("Fetching profile for eId:", eId);
-      const uId= localStorage.getItem("uId");
-      console.log("Using uId:", uId);
-      console.log("Using gId:", gId);
-      console.log("eid:", eId); 
-      console.log(localStorage.getItem("userId"));
-      console.log("Using userTypesinUpdate:", userTypesinUpdate);
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        console.log("Fetching profile for userId:", userId);
 
-      // 1. Fetch current user's employment profile (optional, as before)
-      const response = await axios.get(
-        `http://195.35.21.108:3002/auth/api/v1/users/${userId}`
-      );
-      const employment = response.data;
-      console.log("Employment Profile Response:", employment);
-      if (employment) {
-        setFullName(employment.fullName || "");
-        setEmail(employment.email || "");
-        setJobTitle(employment.userType || "");
-        localStorage.setItem("fullName",employment.fullName);
-        console.log(localStorage.getItem("fullName"));
+        // 1. Fetch current user's profile
+        const response = await axios.get(
+          `http://195.35.21.108:3002/auth/api/v1/users/${userId}`
+        );
+        const employment = response.data;
+        console.log("Employment Profile Response:", employment);
+
+        if (employment) {
+          setFullName(employment.fullName || "");
+          setEmail(employment.email || "");
+          setJobTitle(employment.userType || "");
+          localStorage.setItem("fullName", employment.fullName);
+        }
+
+        // 2. Fetch all users (to match ID if needed)
+        const allUsersRes = await axios.get(
+          "http://195.35.21.108:3002/auth/api/v1/users/all?page=1&limit=1000000000000000000"
+        );
+        const allUsers = allUsersRes.data.users || [];
+        const matchedUser = allUsers.find(
+          (user) => user.email === employment.email
+        );
+
+        if (matchedUser) {
+          localStorage.setItem("uId", matchedUser._id);
+          console.log("Stored uId:", matchedUser._id);
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+        toast.error("Failed to load profile data!");
       }
+    };
 
-      // 2. Fetch all users
-      const allUsersRes = await axios.get(
-        "http://195.35.21.108:3002/auth/api/v1/users/all?page=1&limit=1000000000000000000"
-      );
-      const allUsers = allUsersRes.data.users || [];
-
-      // 3. Find the user whose email matches the logged-in email
-      const matchedUser = allUsers.find((user) => user.email === employment.email);
-
-      if (matchedUser) {
-        console.log("Matched User Full Data:", matchedUser);
-        console.log("Matched User ID:", matchedUser._id);
-        localStorage.setItem("uId", matchedUser._id);
-        console.log("Stored uId in localStorage:", localStorage.getItem("uId"));
-      } else {
-        console.log("No user matched with email:", employment.email);
-      }
-    } catch (error) {
-      console.error("Error fetching profile or users:", error);
-      toast.error("Failed to load profile data!");
-    }
-  };
-
-  fetchProfile();
-}, []);
-
+    fetchProfile();
+  }, []);
 
   // Save Profile Info
-const handleSaveProfile = async () => {
+  const handleSaveProfile = async () => {
     const uId = localStorage.getItem("uId");
+
     if (!fullName || !email || !jobTitle) {
       toast.error("Please fill all profile fields");
       return;
     }
+
     if (!uId) {
       toast.error("User ID not found!");
       return;
@@ -111,20 +101,41 @@ const handleSaveProfile = async () => {
     }
   };
 
-  // Change Password
-  const handleChangePassword = () => {
+  const employmentId=localStorage.getItem("employment");
+  // ✅ Change Password Function (API integrated)
+  const handleChangePassword = async () => {
+    console.log("employee",employmentId);
     if (!oldPassword || !newPassword || !confirmPassword) {
       toast.error("Please fill in all password fields");
       return;
     }
+
     if (newPassword !== confirmPassword) {
       toast.error("New passwords do not match");
       return;
     }
-    toast.success("Password changed successfully!");
-    setOldPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
+
+    try {
+      console.log("Changing password for eId:", eId);
+      const response = await axios.patch(
+        `http://195.35.21.108:3002/auth/api/v1/employment/${employmentId}/update-password`,
+        {
+          currentPassword: oldPassword,
+          newPassword: newPassword,
+        }
+      );
+
+      console.log("Password change response:", response.data);
+      toast.success("Password changed successfully!");
+      setOldPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      console.error("Error changing password:", error);
+      const msg =
+        error.response?.data?.message || "Failed to change password!";
+      toast.error(msg);
+    }
   };
 
   return (
@@ -231,4 +242,4 @@ const handleSaveProfile = async () => {
       </div>
     </main>
   );
-} 
+}
