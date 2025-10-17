@@ -21,6 +21,7 @@ const App = () => {
   const [loading, setLoading] = useState(true); //  added loading state 
   const [completedCourses, setCompletedCourses] = useState([]); 
   const location = useLocation(); 
+  const [courses, setCourses] = useState([]); 
 
   useEffect(() => { 
     const token = localStorage.getItem("token"); 
@@ -65,7 +66,7 @@ const App = () => {
           {/* Private Routes */} 
           {isAuthenticated ? ( 
             <> 
-              <Route path="/" element={<Dashboard />} /> 
+              <Route path="/" element={<Dashboard  completedCourses={completedCourses} overdueCourses={overdueCourses} courses={courses} setCompletedCourses={setCompletedCourses} setOverdueCourses={setOverdueCourses} setCourses={setCourses}/>} /> 
               <Route 
                 path="/todo-training" 
                 element={ 
@@ -74,7 +75,9 @@ const App = () => {
                     overdueCourses={overdueCourses} 
                     setOverdueCourses={setOverdueCourses} 
                     completedCourses={completedCourses} 
-                    setCompletedCourses={setCompletedCourses} 
+                    setCompletedCourses={setCompletedCourses}
+                    courses={courses}
+                    setCourses={setCourses} 
                   /> 
                 } 
               /> 
