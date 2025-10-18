@@ -166,7 +166,7 @@ const Dashboard = ({
             <p className="text-sm text-gray-500">Total Trainings</p>
           </div>
           <h3 className="text-2xl font-bold">
-            {courses.length + overdueCourses.length + completedCourses.length}2
+            {courses.length + overdueCourses.length + completedCourses.length}
           </h3>
           <p className="text-green-600 text-xs">
             {" "}
@@ -180,7 +180,7 @@ const Dashboard = ({
             <p className="text-sm text-gray-500">Completed</p>
           </div>
           <h3 className="text-2xl font-bold text-green-600">
-            {completedCourses.length}2
+            {completedCourses.length}
           </h3>
           <p className="text-green-600 text-xs">
             {" "}
@@ -194,7 +194,7 @@ const Dashboard = ({
             <p className="text-sm text-gray-500">In Progress</p>
           </div>
           <h3 className="text-2xl font-bold text-yellow-600">
-            {courses.length}5
+            {courses.length}
           </h3>
           <p className="text-gray-500 text-xs">
             {" "}
@@ -208,7 +208,7 @@ const Dashboard = ({
             <p className="text-sm text-gray-500">Overdue</p>
           </div>
           <h3 className="text-2xl font-bold text-red-600">
-            {overdueCourses.length}19
+            {overdueCourses.length}
           </h3>
           <p className="text-red-500 text-xs">Requires attention</p>
         </div>
@@ -230,14 +230,14 @@ const Dashboard = ({
                 <div key={idx} className="bg-white p-4 rounded-lg shadow mb-3">
                   <div className="flex justify-between items-center">
                     <h4 className="font-medium">
-                      {course.courseDetails.title} phis farm
+                      {course.courseDetails.title}
                     </h4>
                     <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full flex items-center gap-1">
                       <Clock className="w-3 h-3" /> To Do
                     </span>
                   </div>
                   <p className="text-sm text-gray-500 mt-1">
-                    {course.courseDetails.description} phis farm
+                    {course.courseDetails.description}
                   </p>
                   <div className="w-full bg-gray-200 rounded-full h-2 my-3">
                     <div
@@ -247,7 +247,7 @@ const Dashboard = ({
                   </div>
                   <button
                     className="mt-2 bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700"
-                    onClick={() => navigate(`/video/${c.courseId}`)}
+                    onClick={() => navigate(`/videos/${c.courseId}`)}
                   >
                     Start Training
                   </button>
@@ -262,13 +262,13 @@ const Dashboard = ({
           .map((course, idx) => (
             <div key={idx} className="bg-white p-4 rounded-lg shadow mb-3">
               <div className="flex justify-between items-center">
-                <h4 className="font-medium">{course.courseDetails.title} phis farm</h4>
+                <h4 className="font-medium">{course.courseDetails.title}</h4>
                 <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full flex items-center gap-1">
                   <AlertTriangle className="w-3 h-3" /> Overdue
                 </span>
               </div>
               <p className="text-sm text-gray-500 mt-1">
-                {course.courseDetails.description} phis farm
+                {course.courseDetails.description}
               </p>
               <div className="w-full bg-gray-200 rounded-full h-2 my-3">
                 <div
@@ -288,13 +288,13 @@ const Dashboard = ({
           .map((course, idx) => (
             <div key={idx} className="bg-white p-4 rounded-lg shadow">
               <div className="flex justify-between items-center">
-                <h4 className="font-medium">{course.courseDetails.title} phis farm</h4>
+                <h4 className="font-medium">{course.courseDetails.title}</h4>
                 <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full flex items-center gap-1">
                   <CheckCircle2 className="w-3 h-3" /> Completed
                 </span>
               </div>
               <p className="text-sm text-gray-500 mt-1">
-                {course.courseDetails.description} phis farm
+                {course.courseDetails.description}
               </p>
               <div className="w-full bg-gray-200 rounded-full h-2 my-3">
                 <div

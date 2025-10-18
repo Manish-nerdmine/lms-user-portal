@@ -9,7 +9,6 @@ import axios from "axios";
 export default function Setting() {
   const navigate = useNavigate();
   const gId = localStorage.getItem("groupId");
-  const userTypesinUpdate = "67f92394d8650ede1e19015f";
   const userId = localStorage.getItem("userId");
   const eId = localStorage.getItem("eId"); // Employment ID for password update
 
@@ -22,6 +21,7 @@ export default function Setting() {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const employmentid= localStorage.getItem("employment");
 
   // Fetch profile data on component mount
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function Setting() {
 
         // 1. Fetch current user's profile
         const response = await axios.get(
-          `http://195.35.21.108:3002/auth/api/v1/users/${userId}`
+          `http://195.35.21.108:3002/auth/api/v1/employment/${employmentid}`
         );
         const employment = response.data;
         console.log("Employment Profile Response:", employment);
@@ -39,8 +39,8 @@ export default function Setting() {
         if (employment) {
           setFullName(employment.fullName || "");
           setEmail(employment.email || "");
-          setJobTitle(employment.userType || "");
-          localStorage.setItem("fullName", employment.fullName);
+          setJobTitle(employment.role || "");
+          localStorage.setItem(`fullName_${userId}`, employment.fullName);
         }
 
         // 2. Fetch all users (to match ID if needed)
@@ -81,14 +81,14 @@ export default function Setting() {
 
     try {
       const payload = {
-        userType: userTypesinUpdate,
+        role: jobTitle,
         fullName: fullName,
         email: email,
         groupId: gId,
       };
 
       const updateRes = await axios.put(
-        `http://195.35.21.108:3002/auth/api/v1/users/${userId}`,
+        `http://195.35.21.108:3002/auth/api/v1/employment/${employmentid}`,
         payload
       );
 
@@ -184,7 +184,7 @@ export default function Setting() {
               <input
                 type="text"
                 placeholder="Job Title"
-                value="User"
+                value={jobTitle}
                 onChange={(e) => setJobTitle(e.target.value)}
                 className="w-full outline-none"
               />
