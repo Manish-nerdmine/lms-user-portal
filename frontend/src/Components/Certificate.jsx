@@ -13,6 +13,7 @@ const Certificate = ({ course, elementId }) => {
 
   const userId=localStorage.getItem("userId");
 
+  
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-gradient-to-b from-purple-900 via-purple-700 to-pink-600 p-6"
