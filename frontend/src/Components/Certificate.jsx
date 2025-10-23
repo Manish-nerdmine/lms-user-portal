@@ -43,7 +43,7 @@ const Certificate = ({ course, elementId }) => {
                 This certificate is proudly awarded to
               </p>
 
-              <h2 className="text-3xl md:text-4xl font-semibold mt-6 text-red-600">
+              <h2 className="text-3xl md:text-4xl font-semibold mt-6 text-purple-800">
                 {localStorage.getItem(`fullName_${userId}`)}
               </h2>
 
@@ -57,7 +57,7 @@ const Certificate = ({ course, elementId }) => {
             {/* Course box */}
             <div className="mt-8">
               <div className="border-l-4 border-purple-600 bg-gray-50 rounded p-6">
-                <h3 className="text-center text-xl md:text-2xl font-medium text-pink-600">
+                <h3 className="text-center text-xl md:text-2xl font-medium text-pink-600 mb-6">
                   {course?.courseDetails?.title}
                 </h3>
               </div>
@@ -84,15 +84,8 @@ const Certificate = ({ course, elementId }) => {
                   Authorized By
                 </div>
                 <div className="mt-2 font-semibold text-indigo-700">
-                  Udit Agarwal
+                  Adley Francois
                 </div>
-              </div>
-            </div>
-
-            <div className="mt-10 text-center text-xs text-gray-400">
-              <div className="uppercase tracking-widest">Certificate ID</div>
-              <div className="mt-2 text-sm text-purple-600">
-                KD-2025-TC-847392
               </div>
             </div>
           </div>
