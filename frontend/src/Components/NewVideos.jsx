@@ -36,11 +36,6 @@ export default function NewVideos() {
       <CodedAgentsExamplesSection />
       <CodedAgentsYouTubePage />
       <ProductionJourneySection />
-      <LearningResourcesSection />
-      <ChallengeBanner />
-      <SpecialistAgentChallenge />
-      <UiPathExitScreen />
-      <RefreshIconDisplay />
     </div>
   );
 }
