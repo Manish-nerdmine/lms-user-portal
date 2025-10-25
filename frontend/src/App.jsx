@@ -13,6 +13,8 @@ import "react-toastify/dist/ReactToastify.css";
 import CoursePlayer from "./Pages/videos"; 
 import Certificates from "./Pages/Certificates"; 
 import Certificate from "./Components/Certificate"; 
+import CoursePlayers from "./Pages/VideosDublicate";
+import NewVideos from "./Components/NewVideos";
 
 const App = () => { 
   const [isAuthenticated, setIsAuthenticated] = useState(false); 
@@ -87,7 +89,8 @@ const App = () => {
               /> 
               <Route path="/complete-training" element={<Complete completedTrainings={completedCourses}/>} /> 
               <Route path="/setting" element={<Setting />} /> 
-              <Route path="/videos/:courseId" element={<CoursePlayer />} /> 
+              <Route path="/videos/:courseId" element={<CoursePlayers />} />
+              <Route path="/course/:courseId/video/:videoId" element={<NewVideos />} /> 
               <Route path="/certificates" element={<Certificates overdueCourses={completedCourses}/>} /> 
             </> 
           ) : ( 

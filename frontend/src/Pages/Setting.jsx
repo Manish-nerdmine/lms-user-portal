@@ -127,6 +127,7 @@ export default function Setting() {
 
       console.log("Password change response:", response.data);
       toast.success("Password changed successfully!");
+      navigate("/login");
       setOldPassword("");
       setNewPassword("");
       setConfirmPassword("");
