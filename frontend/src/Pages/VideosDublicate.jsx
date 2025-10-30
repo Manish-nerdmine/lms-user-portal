@@ -356,7 +356,7 @@ export default function CoursePlayers() {
 
                   <p className="mt-6 text-blue-600 font-semibold">
                     🎬 Video will be available on next page. (Click “Start
-                    Video” below)
+                    {activeItem.title}” below)
                   </p>
 
                   <button
@@ -365,7 +365,7 @@ export default function CoursePlayers() {
                     }
                     className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
                   >
-                    Start Video
+                    Start {activeItem.title} Module
                   </button>
                 </div>
               </div>

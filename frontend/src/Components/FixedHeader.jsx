@@ -7,7 +7,7 @@ const FixedHeader = () => {
   const navigate = useNavigate();
   const { courseId } = useParams(); 
   return (
-    <header className="fixed top-0 left-0 right-0 w-full bg-white border-b border-gray-200 p-4 flex justify-between items-center shadow-md z-50 px-8">
+    <header className="fixed top-0  w-full bg-white border-b border-gray-200 p-4 flex justify-between items-center shadow-md z-50 px-8">
       <button
         className="text-gray-700 hover:text-gray-900 flex items-center space-x-1 cursor-pointer"
         onClick={() => navigate(`/videos/${courseId}`)}

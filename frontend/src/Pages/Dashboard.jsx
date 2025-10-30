@@ -248,7 +248,7 @@ const Dashboard = ({
                   </div>
                   <button
                     className="mt-2 bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700"
-                    onClick={() => navigate(`/videos/${c.courseId}`)}
+                    onClick={() => navigate(`/videos/${course.courseId}`)}
                   >
                     Start Training
                   </button>
@@ -348,7 +348,7 @@ const Dashboard = ({
             ))}
           </ul>
 
-          <button className="mt-4 w-full bg-gray-100 text-gray-700 py-2 rounded-md hover:bg-gray-200">
+          <button className="mt-4 w-full bg-gray-100 text-gray-700 py-2 rounded-md hover:bg-gray-200" onClick={() => navigate('/todo-training')}>
             View All Deadlines
           </button>
         </div>

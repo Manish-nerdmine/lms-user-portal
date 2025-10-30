@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { FiHome, FiList, FiClock, FiCheckCircle, FiMenu ,FiAward} from "react-icons/fi";
+import {
+  FiHome,
+  FiList,
+  FiClock,
+  FiCheckCircle,
+  FiMenu,
+  FiAward,
+} from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
@@ -17,11 +24,16 @@ import {
   LogOut,
 } from "lucide-react";
 import { toast } from "react-toastify";
+import { MdHelp } from 'react-icons/md';
+import TicketModal from "./RealTicket";
+import Chat from "./RealChat";
+
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [open, setOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -31,13 +43,39 @@ const Sidebar = () => {
     setTimeout(() => navigate("/login"), 1500);
   };
 
-  const isActive = (path) =>
-    location.pathname === path
-      ? "bg-blue-600 text-white font-semibold rounded-md"
-      : "text-gray-200 hover:text-white hover:bg-gray-800 rounded-md";
+const isActive = (path, isHelp = false) =>
+  location.pathname === path || isHelp
+    ? "bg-blue-600 text-white font-semibold rounded-md"
+    : "text-gray-200 hover:text-white hover:bg-gray-800 rounded-md";
+
+  const helpItems = [
+    { label: "Raise a Ticket", action: () => setTicketOpen(true) },
+    { label: "Email Us", action: () => alert("Email Us clicked") },
+    { label: "Chat Support", action: () =>  setChatOpen(true) },
+  ];
+
+  const renderHelpDropdown = () =>
+    helpItems.map((item, idx) => (
+      <p
+        key={idx}
+        onClick={() => {
+          item.action();
+          setHelpOpen(false);
+        }}
+        className="cursor-pointer px-5 py-2 text-gray-500 hover:bg-gray-700 rounded-md"
+      >
+        {item.label}
+      </p>
+    ));
+
+    
+    const [ticketOpen, setTicketOpen] = useState(false);
+    const [chatOpen, setChatOpen] = useState(false);
 
   return (
     <>
+    <TicketModal isOpen={ticketOpen} onClose={() => setTicketOpen(false)} />
+    <Chat isOpen={chatOpen} onClose={() => setChatOpen(false)} />
       {/* ----------- Desktop Sidebar (only lg and up) ----------- */}
       <div className="hidden lg:flex fixed top-0 left-0 h-screen w-64 bg-gray-900 text-white flex-col z-50">
         {/* Logo */}
@@ -96,6 +134,25 @@ const Sidebar = () => {
           >
             <FiSettings className="mr-2" /> Settings
           </p>
+          <p
+            onClick={() => setHelpOpen(!helpOpen)}
+            className="cursor-pointer flex items-center justify-between px-3 py-2 text-gray-200 hover:text-white hover:bg-gray-800 rounded-md"
+          >
+            <span className="flex items-center">
+              <MdHelp className="mr-2" /> Get Help
+            </span>
+            <span
+              className={`transform transition-transform duration-200 ${
+                helpOpen ? "rotate-90" : "rotate-0"
+              }`}
+            >
+              ▶
+            </span>
+          </p>
+          {helpOpen && (
+            <div className="flex flex-col">{renderHelpDropdown()}</div>
+          )}
+
           <p
             onClick={handleLogout}
             className={`cursor-pointer flex items-center px-3 py-2 hover:bg-gray-800`}
@@ -189,6 +246,25 @@ const Sidebar = () => {
             >
               <FiSettings className="mr-2" /> Settings
             </p>
+            <p
+              onClick={() => setHelpOpen(!helpOpen)}
+              className="cursor-pointer flex items-center justify-between px-3 py-2 text-gray-200 hover:text-white hover:bg-gray-800 rounded-md"
+            >
+              <span className="flex items-center">
+                <MdHelp className="mr-2" /> Get Help
+              </span>
+              <span
+                className={`transform transition-transform duration-200 ${
+                  helpOpen ? "rotate-90" : "rotate-0"
+                }`}
+              >
+                ▶
+              </span>
+            </p>
+            {helpOpen && (
+              <div className="flex flex-col">{renderHelpDropdown()}</div>
+            )}
+
             <p
               onClick={handleLogout}
               className={`cursor-pointer flex items-center px-3 py-2 hover:bg-gray-800`}

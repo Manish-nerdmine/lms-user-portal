@@ -11,11 +11,13 @@ import ChallengeBanner from "./ChallengeBanner";
 import SpecialistAgentChallenge from "./SpecialistAgentChallenge";
 import UiPathExitScreen from "./UiPathExitScreen";
 import RefreshIconDisplay from "./RefreshIconDisplay";
+import { useNavigate } from "react-router-dom";
 
 //  Main App Component
 export default function NewVideos() {
   const [showSecond, setShowSecond] = useState(false);
   const [showThird, setShowThird] = useState(false);
+  const navigate = useNavigate();
 
   const handleScroll = () => {
     setShowSecond(true);
@@ -36,6 +38,7 @@ export default function NewVideos() {
       <CodedAgentsExamplesSection />
       <CodedAgentsYouTubePage />
       <ProductionJourneySection />
+      <UiPathExitScreen/>
     </div>
   );
 }
