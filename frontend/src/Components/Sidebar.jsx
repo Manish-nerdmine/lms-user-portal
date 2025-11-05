@@ -51,7 +51,6 @@ const isActive = (path, isHelp = false) =>
   const helpItems = [
     { label: "Raise a Ticket", action: () => setTicketOpen(true) },
     { label: "Email Us", action: () => alert("Email Us clicked") },
-    { label: "Chat Support", action: () =>  setChatOpen(true) },
   ];
 
   const renderHelpDropdown = () =>
