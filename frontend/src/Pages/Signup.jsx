@@ -85,6 +85,26 @@ const Sign = () => {
     }
   };
 
+  useEffect(() => {
+    const checkStatus = async () => {
+      try {
+        const res = await axios.get(
+          `http://195.35.21.108:3002/auth/api/v1/employment/check-status/${email}`
+        );
+        console.log("Status Check Response:", res.data);
+        if (res.data.status === true) {
+          navigate("/login");
+        } else {
+          navigate("/signup");
+        }
+      } catch (error) {
+        console.error("Error while checking status:", error);
+      }
+    };
+
+    checkStatus();
+  }, [navigate]);
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-[#f5f7fb]">
       <ToastContainer position="top-right" autoClose={3000} />
