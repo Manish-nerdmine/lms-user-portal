@@ -24,10 +24,11 @@ import {
   LogOut,
 } from "lucide-react";
 import { toast } from "react-toastify";
-import { MdHelp } from 'react-icons/md';
+import { MdHelp } from "react-icons/md";
 import TicketModal from "./RealTicket";
 import Chat from "./RealChat";
-
+import logo from "../assets/logo.png";
+import sidebar from "../assets/sidebarImage.jpg";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -43,10 +44,10 @@ const Sidebar = () => {
     setTimeout(() => navigate("/login"), 1500);
   };
 
-const isActive = (path, isHelp = false) =>
-  location.pathname === path || isHelp
-    ? "bg-blue-600 text-white font-semibold rounded-md"
-    : "text-gray-200 hover:text-white hover:bg-gray-800 rounded-md";
+  const isActive = (path, isHelp = false) =>
+    location.pathname === path || isHelp
+      ? "bg-blue-600 text-white font-semibold rounded-md"
+      : "text-gray-200 hover:text-white hover:bg-gray-800 rounded-md";
 
   const helpItems = [
     { label: "Raise a Ticket", action: () => setTicketOpen(true) },
@@ -67,19 +68,21 @@ const isActive = (path, isHelp = false) =>
       </p>
     ));
 
-    
-    const [ticketOpen, setTicketOpen] = useState(false);
-    const [chatOpen, setChatOpen] = useState(false);
+  const [ticketOpen, setTicketOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
 
   return (
     <>
-    <TicketModal isOpen={ticketOpen} onClose={() => setTicketOpen(false)} />
-    <Chat isOpen={chatOpen} onClose={() => setChatOpen(false)} />
+      <TicketModal isOpen={ticketOpen} onClose={() => setTicketOpen(false)} />
+      <Chat isOpen={chatOpen} onClose={() => setChatOpen(false)} />
       {/* ----------- Desktop Sidebar (only lg and up) ----------- */}
-      <div className="hidden lg:flex fixed top-0 left-0 h-screen w-64 bg-gray-900 text-white flex-col z-50">
+      <div
+        className="hidden lg:flex fixed top-0 left-0 h-screen w-64 bg-gray-900 text-white flex-col z-50 bg-cover bg-center"
+        style={{ backgroundImage: `url(${sidebar})` }}
+      >
         {/* Logo */}
-        <div className="flex items-center justify-center h-16 border-b border-gray-800">
-          <h1 className="text-xl font-bold text-blue-400">phish</h1>
+        <div className="flex items-center justify-center h-16 border-b border-gray-500 py-4">
+          <img src={logo} alt="Phish Logo" className="h-12 w-[10rem] " />
         </div>
 
         {/* Sidebar Menu */}
@@ -154,7 +157,7 @@ const isActive = (path, isHelp = false) =>
 
           <p
             onClick={handleLogout}
-            className={`cursor-pointer flex items-center px-3 py-2 hover:bg-gray-800`}
+            className={`cursor-pointer flex items-center px-3 py-2 hover:bg-gray-800 `}
           >
             <LogOut className="mr-2" /> Logout
           </p>
@@ -266,7 +269,7 @@ const isActive = (path, isHelp = false) =>
 
             <p
               onClick={handleLogout}
-              className={`cursor-pointer flex items-center px-3 py-2 hover:bg-gray-800`}
+              className={`cursor-pointer flex items-center px-3 py-2 hover:bg-gray-800 `}
             >
               <LogOut className="mr-2" /> Logout
             </p>

@@ -198,7 +198,7 @@ export default function Setting() {
           </div>
 
           <button
-            className="mt-6 bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow"
+            className="mt-6 bg-purple-900 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow"
             onClick={handleSaveProfile}
           >
             Save Changes
@@ -240,7 +240,7 @@ export default function Setting() {
             <div className="flex justify-end">
               <button
                 onClick={handleChangePassword}
-                className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow transition"
+                className="bg-purple-900 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow transition"
               >
                 Update Password
               </button>

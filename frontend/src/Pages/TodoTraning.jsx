@@ -198,7 +198,7 @@ const TodoTraining = ({
 
                     {/* Button */}
                     <button
-                      className="w-full bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700"
+                      className="w-full bg-purple-900 text-white px-4 py-2 rounded-md hover:bg-purple-700"
                       onClick={() => navigate(`/videos/${c.courseId}`)}
                     >
                       Start Training

@@ -63,7 +63,7 @@ const Certificates = ({ overdueCourses }) => {
 
           <button
             onClick={downloadAllCertificates}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition"
+            className="flex items-center gap-2 bg-purple-950 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition"
           >
             <FiDownload />
             Download All
@@ -96,7 +96,7 @@ const Certificates = ({ overdueCourses }) => {
 
                 <button
                   onClick={() => handleDownload(course)}
-                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition"
+                  className="flex items-center gap-2 bg-purple-950 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition"
                 >
                   <FiDownload />
                   Download
