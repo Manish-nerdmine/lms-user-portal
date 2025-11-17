@@ -21,7 +21,7 @@ export default function Setting() {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const employmentid= localStorage.getItem("employment");
+  const employmentid = localStorage.getItem("employment");
 
   // Fetch profile data on component mount
   useEffect(() => {
@@ -101,12 +101,21 @@ export default function Setting() {
     }
   };
 
-  const employmentId=localStorage.getItem("employment");
-  // ✅ Change Password Function (API integrated)
+  const employmentId = localStorage.getItem("employment");
+  //  Change Password Function (API integrated)
   const handleChangePassword = async () => {
-    console.log("employee",employmentId);
+    console.log("employee", employmentId);
     if (!oldPassword || !newPassword || !confirmPassword) {
       toast.error("Please fill in all password fields");
+      return;
+    }
+    const strongPasswordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (!strongPasswordRegex.test(newPassword)) {
+      toast.error(
+        "Password must have at least 8 characters, including 1 uppercase, 1 lowercase, 1 number, and 1 special symbol"
+      );
       return;
     }
 
@@ -132,8 +141,7 @@ export default function Setting() {
       setConfirmPassword("");
     } catch (error) {
       console.error("Error changing password:", error);
-      const msg =
-        error.response?.data?.message || "Failed to change password!";
+      const msg = error.response?.data?.message || "Failed to change password!";
       toast.error(msg);
     }
   };
@@ -190,7 +198,7 @@ export default function Setting() {
           </div>
 
           <button
-            className="mt-6 bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow"
+            className="mt-6 bg-purple-900 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow"
             onClick={handleSaveProfile}
           >
             Save Changes
@@ -215,12 +223,14 @@ export default function Setting() {
             <input
               type="password"
               placeholder="New Password"
+              minLength={8}
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               className="border rounded-md px-3 py-2 w-full shadow-sm focus:ring-2 focus:ring-purple-500 outline-none"
             />
             <input
               type="password"
+              minLength={8}
               placeholder="Confirm New Password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -230,7 +240,7 @@ export default function Setting() {
             <div className="flex justify-end">
               <button
                 onClick={handleChangePassword}
-                className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow transition"
+                className="bg-purple-900 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow transition"
               >
                 Update Password
               </button>

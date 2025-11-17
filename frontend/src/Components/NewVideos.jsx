@@ -6,39 +6,38 @@ import ThirdSection from "./ThirdSection";
 import CodedAgentsExamplesSection from "./CodedAgentsExamplesSection";
 import CodedAgentsYouTubePage from "./CodedAgentsYouTubePage";
 import ProductionJourneySection from "./ProductionJourneySection";
-import LearningResourcesSection from "./LearningResourcesSection";
-import ChallengeBanner from "./ChallengeBanner";
-import SpecialistAgentChallenge from "./SpecialistAgentChallenge";
 import UiPathExitScreen from "./UiPathExitScreen";
-import RefreshIconDisplay from "./RefreshIconDisplay";
-import { useNavigate } from "react-router-dom";
 
-//  Main App Component
 export default function NewVideos() {
-  const [showSecond, setShowSecond] = useState(false);
-  const [showThird, setShowThird] = useState(false);
-  const navigate = useNavigate();
+  const [unlocked, setUnlocked] = useState(false); //  Initially locked
 
   const handleScroll = () => {
-    setShowSecond(true);
-    setShowThird(true);
+    setUnlocked(true); //  Unlock next sections
     setTimeout(() => {
-      document
-        .getElementById("section2")
-        .scrollIntoView({ behavior: "smooth" });
-    }, 400);
+      const nextSection = document.getElementById("section2");
+      if (nextSection) {
+        nextSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 300);
   };
 
   return (
-    <div className="w-full relative">
+    <div className="w-full relative overflow-hidden">
       <FixedHeader />
+      {/* First Section always visible */}
       <FirstSection handleScroll={handleScroll} />
-      <SecondSection showSecond={showSecond} />
-      <ThirdSection showThird={showThird} />
-      <CodedAgentsExamplesSection />
-      <CodedAgentsYouTubePage />
-      <ProductionJourneySection />
-      <UiPathExitScreen/>
+
+      {/*  Only show these after arrow click */}
+      {unlocked && (
+        <>
+          <SecondSection showSecond={true} />
+          <ThirdSection showThird={true} />
+          <CodedAgentsExamplesSection />
+          <CodedAgentsYouTubePage />
+          <ProductionJourneySection />
+          <UiPathExitScreen />
+        </>
+      )}
     </div>
   );
 }

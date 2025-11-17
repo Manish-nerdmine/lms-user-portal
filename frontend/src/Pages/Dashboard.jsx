@@ -195,8 +195,19 @@ const Dashboard = ({
             <p className="text-sm text-gray-500">In Progress</p>
           </div>
           <h3 className="text-2xl font-bold text-yellow-600">
-            {courses.length}
+            {
+              courses.filter((course) => {
+                const progress =
+                  Number(
+                    localStorage.getItem(
+                      `progress_${userId}_${course.courseId}`
+                    )
+                  ) || 0;
+                return progress > 0 && progress < 100;
+              }).length
+            }
           </h3>
+
           <p className="text-gray-500 text-xs">
             {" "}
             {dueThisWeek.length} due this week
@@ -348,7 +359,10 @@ const Dashboard = ({
             ))}
           </ul>
 
-          <button className="mt-4 w-full bg-gray-100 text-gray-700 py-2 rounded-md hover:bg-gray-200" onClick={() => navigate('/todo-training')}>
+          <button
+            className="mt-4 w-full bg-gray-100 text-gray-700 py-2 rounded-md hover:bg-gray-200"
+            onClick={() => navigate("/todo-training")}
+          >
             View All Deadlines
           </button>
         </div>

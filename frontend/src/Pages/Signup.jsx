@@ -12,6 +12,7 @@ const Sign = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agree, setAgree] = useState(false);
+  
 
   // form states
   const [fullName, setFullName] = useState("");
@@ -19,13 +20,14 @@ const Sign = () => {
   const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const preEmails = params.get("email");
 
   const navigate = useNavigate();
-  const location = useLocation();
 
   // Prefill form using query params
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
 
     const preName = params.get("name");
     const preEmail = params.get("email");
@@ -89,9 +91,9 @@ const Sign = () => {
     const checkStatus = async () => {
       try {
         const res = await axios.get(
-          `http://195.35.21.108:3002/auth/api/v1/employment/check-status/${email}`
+          `http://195.35.21.108:3002/auth/api/v1/employment/user-info/${preEmails}`
         );
-        console.log("Status Check Response:", res.data);
+        console.log("User Info Response:", res.data);
         if (res.data.status === true) {
           navigate("/login");
         } else {
