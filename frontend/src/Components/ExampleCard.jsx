@@ -43,9 +43,9 @@ const agentExamples = [
 const ExampleCard = ({ example }) => (
   <div className="flex flex-col items-center p-1">
     {/* Card Content Box */}
-    <div className="bg-blue-100 p-6 h-full rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-1 border-t-2 border-blue-200">
-      <h3 className="font-bold text-lg text-gray-800 mb-3">{example.title}</h3>
-      <p className="text-sm text-gray-700 leading-relaxed">
+    <div className="bg-purple-900 p-6 h-full rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-1 border-t-2 border-blue-200">
+      <h3 className="font-bold text-lg text-white mb-3">{example.title}</h3>
+      <p className="text-sm text-gray-100 leading-relaxed">
         {example.description}
       </p>
     </div>

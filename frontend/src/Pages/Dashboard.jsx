@@ -287,7 +287,7 @@ const Dashboard = ({
                   style={{ width: `${course.progress || 0}%` }}
                 ></div>
               </div>
-              <button className="mt-2 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">
+              <button className="mt-2 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700" onClick={() => navigate(`/videos/${course.courseId}`)}>
                 Start Now
               </button>
             </div>

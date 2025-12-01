@@ -11,7 +11,7 @@ const UiPathExitScreen = () => {
 
       {/* Close Session Button */}
       <button
-        className="bg-[#048699] hover:bg-teal-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 uppercase tracking-wider text-sm"
+        className="bg-purple-900 hover:bg-purple-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 uppercase tracking-wider text-sm"
         onClick={() => navigate(`/videos/${courseId}`)}
       >
         Close This Session

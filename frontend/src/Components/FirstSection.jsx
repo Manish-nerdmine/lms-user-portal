@@ -4,7 +4,7 @@ import { FaArrowRight, FaTrophy, FaLaptopCode } from "react-icons/fa";
 const FirstSection = ({ handleScroll }) => {
   return (
     <section
-      className="relative w-full h-screen bg-[#048699] text-white flex flex-col justify-center items-center px-10"
+      className="relative w-full h-screen bg-purple-900 text-white flex flex-col justify-center items-center px-10"
       id="main"
     >
       {/* Shapes */}
