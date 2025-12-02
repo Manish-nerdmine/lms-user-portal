@@ -259,7 +259,7 @@ export default function CoursePlayers() {
         <div className="w-48">
           <div className="w-full bg-gray-200 h-2 rounded-full">
             <div
-              className="bg-blue-600 h-2 rounded-full transition-all"
+              className="bg-purple-950 h-2 rounded-full transition-all"
               style={{ width: `${Math.min(progress, 100)}%` }}
             />
           </div>
@@ -319,7 +319,7 @@ export default function CoursePlayers() {
                   disabled={!canOpen}
                   className={`flex justify-between items-center px-3 py-2 rounded-md border transition ${
                     activeItem && activeItem._id === item._id
-                      ? "bg-blue-600 text-white shadow"
+                      ? "bg-purple-950 text-white shadow"
                       : canOpen
                       ? "bg-gray-50 hover:bg-gray-100"
                       : "bg-gray-200 cursor-not-allowed opacity-60"
@@ -354,7 +354,7 @@ export default function CoursePlayers() {
                     {new Date(activeItem.createdAt).toLocaleDateString()}
                   </p>
 
-                  <p className="mt-6 text-blue-600 font-semibold">
+                  <p className="mt-6 text-purple-900 font-semibold">
                     🎬 Video will be available on next page. (Click “Start
                     {activeItem.title}” below)
                   </p>
@@ -363,7 +363,7 @@ export default function CoursePlayers() {
                     onClick={() =>
                       navigate(`/course/${courseId}/video/${activeItem._id}`)
                     }
-                    className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                    className="mt-4 bg-purple-950 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
                   >
                     Start {activeItem.title} Module
                   </button>
@@ -408,7 +408,7 @@ export default function CoursePlayers() {
                           },
                         }))
                       }
-                      className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                      className="bg-purple-950 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
                     >
                       Start Quiz
                     </button>
@@ -515,7 +515,7 @@ export default function CoursePlayers() {
                                 [activeItem._id]: { started: true },
                               }))
                             }
-                            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                            className="bg-purple-950 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
                           >
                             Retake Quiz
                           </button>
@@ -530,7 +530,7 @@ export default function CoursePlayers() {
                       <h2 className="text-2xl font-semibold">
                         Course Assessment Quiz
                       </h2>
-                      <span className="bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded">
+                      <span className="bg-blue-100 text-purple-900 text-sm font-medium px-3 py-1 rounded">
                         {" "}
                         {Object.keys(quizSelections).length - 1}/{" "}
                         {activeItem.questions.length} Answered{" "}
@@ -543,7 +543,7 @@ export default function CoursePlayers() {
                         className="mb-6 border border-gray-200 rounded-lg p-4 bg-gray-50"
                       >
                         <p className="text-md font-semibold mb-3">
-                          <span className="text-blue-700 font-bold">
+                          <span className="text-purple-900 font-bold">
                             Question {idx + 1}:
                           </span>{" "}
                           {q.question}

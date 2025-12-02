@@ -51,7 +51,7 @@ const StepCard = ({ step }) => {
   return (
     <div className="flex flex-col items-center p-2">
       {/* Card Content Box (Top Blue Section) */}
-      <div className="bg- p-6 h-full rounded-lg shadow-xl text-white flex flex-col justify-start w-full transition duration-300 bg-[#048699] text-center">
+      <div className="bg- p-6 h-full rounded-lg shadow-xl text-white flex flex-col justify-start w-full transition duration-300 bg-purple-900 text-center">
         <div className="flex flex-col items-center mb-3 ">
           {/* Icon */}
           <Icon className={`text-4xl ${step.iconColor}`} />

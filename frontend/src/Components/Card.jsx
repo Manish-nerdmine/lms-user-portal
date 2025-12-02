@@ -7,7 +7,7 @@ const Card = ({ title, children, borderColor }) => {
       className={`max-w-5xl w-full bg-white shadow-xl rounded-lg p-6 border-t-4 ${borderColor} text-center`}
     >
       <div className="flex justify-center mb-6">
-        <h2 className="text-xl sm:text-2xl font-semibold bg-[#048699] text-white py-2 px-4 rounded-full">
+        <h2 className="text-xl sm:text-2xl font-semibold bg-purple-900 text-white py-2 px-4 rounded-full">
           {title}
         </h2>
       </div>

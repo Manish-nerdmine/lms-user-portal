@@ -9,7 +9,7 @@ const SecondSection = ({ showSecond }) => {
         showSecond ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       }`}
     >
-      <div className="relative w-full h-[20rem] bg-[#048699] text-white flex flex-col justify-center items-center px-10">
+      <div className="relative w-full h-[20rem] bg-purple-900 text-white flex flex-col justify-center items-center px-10">
         <div className="absolute top-20 left-0 grid grid-cols-3 gap-1 opacity-30">
           <div className="w-24 h-16 bg-[#031b1f]" />
           <div className="w-16 h-24 bg-[#031b1f]" />
