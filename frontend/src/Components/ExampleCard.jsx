@@ -40,19 +40,22 @@ const agentExamples = [
   },
 ];
 
+
+    const stripHtml = (html) => {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent || "";
+  }; 
+
 const ExampleCard = ({ example }) => (
+  
   <div className="flex flex-col items-center p-1">
     {/* Card Content Box */}
     <div className="bg-purple-900 p-6 h-full rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-1 border-t-2 border-blue-200">
-      <h3 className="font-bold text-lg text-white mb-3">{example.title}</h3>
+      <h3 className="font-bold text-lg text-white mb-3">{stripHtml(example.title)}</h3>
       <p className="text-sm text-gray-100 leading-relaxed">
-        {example.description}
+        {stripHtml(example.description)}
       </p>
-    </div>
-
-    {/* Number Marker */}
-    <div className="w-10 h-10 flex items-center justify-center bg-white text-black font-bold text-xl rounded-full border-2 border-gray-300 shadow-md">
-      {example.id}
     </div>
   </div>
 );

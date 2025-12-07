@@ -1,87 +1,146 @@
-import React from "react";
+import React, { useState } from "react";
 import YouTube from "react-youtube";
 import AccordionItem from "./AccordionItem";
-const CodedAgentsYouTubePage = () => {
-  // Note: 'dQw4w9WgXcQ' is a placeholder ID.
-const VIDEO_ID = "dQw4w9WgXcQ";
+import { useNavigate } from "react-router-dom";
 
-const opts = {
-  width: "100%",
-  height: "100%",
-  playerVars: {
-    // https://developers.google.com/youtube/player_parameters
-    autoplay: 0, // 0 = Do not autoplay
-    controls: 1, // Show player controls
-    modestbranding: 1, // Hide YouTube logo on controls
-    rel: 0, // Do not show related videos
-  },
-};
+const CodedAgentsYouTubePage = ({ videoData }) => {
+  // -------------------------------
+  // FUNCTION: Extract YouTube Video ID
+  // -------------------------------
+  const extractYouTubeID = (url) => {
+    if (!url) return null;
+
+    // Case 1: youtube.com/watch?v=xxxxx
+    const watchMatch = url.match(/v=([^&]+)/);
+    if (watchMatch) return watchMatch[1];
+
+    // Case 2: youtu.be/xxxxx
+    const shortMatch = url.match(/youtu\.be\/([^?]+)/);
+    if (shortMatch) return shortMatch[1];
+
+    // Case 3: your streaming backend URL
+    const streamMatch = url.match(/stream\/([^?]+)/);
+    if (streamMatch) return streamMatch[1];
+
+    return null;
+  };
+
+  // final Video ID
+  const VIDEO_ID = extractYouTubeID(
+    videoData?.videoUrl || videoData?.streamingUrl
+  );
+
+  // YouTube Player Options
+  const opts = {
+    width: "100%",
+    height: "100%",
+    playerVars: {
+      autoplay: 0,
+      controls: 1,
+      modestbranding: 1,
+      rel: 0,
+    },
+  };
+
+  // ---------------------------
+  // PREVIEW VIDEO (BEFORE UPLOAD)
+  // ---------------------------
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  const handlePreview = () => {
+    const id = extractYouTubeID(videoData?.videoUrl);
+    if (id) setPreviewUrl(`https://www.youtube.com/embed/${id}`);
+  };
+
+  const navigate = useNavigate();
+  const courseId = videoData?.courseId || "defaultCourseId";
+
   return (
     <div className="min-h-screen bg-gray-100 py-10 font-sans">
       <div className="max-w-4xl mx-auto px-4">
-        {/* --- Video Player Section --- */}
+        {/* ----------------------- */}
+        {/*       VIDEO PLAYER      */}
+        {/* ----------------------- */}
         <div className="bg-white shadow-xl rounded-lg overflow-hidden border border-gray-200 p-4">
-          {/* YouTube Player Container (16:9 Aspect Ratio) */}
           <div className="relative pt-[56.25%]">
             <div className="absolute top-0 left-0 w-full h-full">
-              <YouTube
-                videoId={VIDEO_ID}
-                opts={opts}
-                className="w-full h-full"
-              />
+              {VIDEO_ID ? (
+                <YouTube
+                  videoId={VIDEO_ID}
+                  opts={opts}
+                  className="w-full h-full"
+                />
+              ) : (
+                <p className="text-center text-red-500 mt-10">
+                  Invalid video URL
+                </p>
+              )}
             </div>
           </div>
 
-          <div className="h-10 bg-gray-200 mt-4 rounded-md flex items-center px-3 text-sm text-gray-500">
-            <span className="mr-4">45:48</span>
-            <div className="flex-grow h-1 bg-gray-400 rounded-full"></div>
-          </div>
+          {previewUrl && (
+            <div className="mt-4">
+              <iframe
+                src={previewUrl}
+                className="w-full h-64 rounded-lg"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              ></iframe>
+            </div>
+          )}
         </div>
 
-        <div className="mt-8 bg-white shadow-lg rounded-lg border border-gray-200">
-          <AccordionItem
-            title="Key takeaways"
-            content={
-              <ul className="list-disc list-inside space-y-2 pl-4">
-                <li>
-                  Coded agents offer full control over logic and system
-                  integrations.
-                </li>
-                <li>
-                  They can be packaged and deployed as native UiPath processes.
-                </li>
-                <li>
-                  The session highlights autonomous payment and travel assistant
-                  agents.
-                </li>
-                <li>
-                  Instructions for the $10,000 prize contest are available.
-                </li>
-              </ul>
-            }
-          />
+        {/* --------------------------- */}
+        {/*   ACCORDIONS (Dynamic)     */}
+        {/* --------------------------- */}
+        <div className="mt-8 bg-white shadow-lg rounded-lg border border-gray-200 p-5">
+          <h2 className="text-xl font-bold mb-4">Accordions</h2>
+          {videoData?.accordions?.map((acc) => (
+            <AccordionItem
+              key={acc.id}
+              title={acc.sectionTitle.replace(/<[^>]+>/g, "")}
+              content={
+                <ul className="list-disc list-inside space-y-2 pl-4">
+                  {acc.items.map((item) => (
+                    <li key={item.id}>
+                      <strong>{item.title.replace(/<[^>]+>/g, "")}</strong>{" "}
+                    </li>
+                  ))}
+                </ul>
+              }
+            />
+          ))}
+        </div>
 
-          <AccordionItem
-            title="Frequently asked questions"
-            content={
-              <ul className="list-disc list-inside space-y-2 pl-4">
-                <li>
-                  **Q: Which frameworks are supported?** A: LangGraph,
-                  LlamaIndex, and others via the UiPath SDK.
-                </li>
-                <li>
-                  **Q: How are coded agents governed?** A: They are fully
-                  governed and secured under the UiPath Platform.
-                </li>
-                <li>
-                  **Q: Can I use TypeScript?** A: Yes, the TypeScript SDK is
-                  covered for building coded apps.
-                </li>
-              </ul>
-            }
-          />
+        {/* --------------------------- */}
+        {/*        FAQs Dynamic         */}
+        {/* --------------------------- */}
+        <div className="mt-8 bg-white p-5 rounded-lg shadow">
+          <h2 className="text-xl font-bold mb-4">FAQs</h2>
+
+          {videoData?.faqs?.map((faq) => (
+            <AccordionItem
+              key={faq.id}
+              title={faq.question.replace(/<[^>]+>/g, "")}
+              content={<p>{faq.answer.replace(/<[^>]+>/g, "")}</p>}
+            />
+          ))}
         </div>
       </div>
+
+      <div className=" bg-gray-100/50 flex gap-5 items-center justify-center pb-16 mt-10">
+
+        <button className="bg-green-600 hover:bg-green-400 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 uppercase tracking-wider text-sm">Complete Module</button>
+
+        {/* Close Session Button */}
+        <button
+          className="bg-red-600 hover:bg-red-400 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 uppercase tracking-wider text-sm"
+          onClick={() => navigate(`/videos/${courseId}`)}
+        >
+          Close This Module
+        </button>
+      </div>
+
+
     </div>
   );
 };

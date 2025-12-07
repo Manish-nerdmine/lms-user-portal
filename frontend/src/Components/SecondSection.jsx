@@ -1,7 +1,16 @@
 import React from "react";
 import Card from "./Card";
 
-const SecondSection = ({ showSecond }) => {
+const SecondSection = ({ showSecond,videoData }) => {
+
+    const stripHtml = (html) => {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent;
+  };
+
+  console.log("Video Data in SecondSection:", videoData);
+
   return (
     <section
       id="section2"
@@ -26,27 +35,11 @@ const SecondSection = ({ showSecond }) => {
         </div>
       </div>
       <div className="relative z-10 flex flex-col items-center gap-10 p-6 sm:p-10 w-full h-auto">
-        <Card title="What are coded agents?" borderColor="border-blue-500">
+        <Card title={stripHtml(videoData.overview[0].title)} borderColor="border-blue-500">
           <p className="mb-4">
-            <span className="font-bold text-blue-600">UiPath coded agents</span>{" "}
-            can be built directly in your preferred IDE using frameworks like{" "}
-            <span className="font-semibold">LangGraph, LlamaIndex</span>, and
-            are integrated via the{" "}
-            <span className="font-semibold text-red-600">UiPath SDK</span> to
-            access platform services (assets, storage buckets, content
-            grounding, LLM gateway), thereby giving you full control over their
-            logic, behavior, and system integrations.
+            {stripHtml(videoData.overview[0].description)}
           </p>
-          <p>
-            With the{" "}
-            <span className="font-semibold text-orange-600">CLI SDK</span>, you
-            can package and publish them as{" "}
-            <span className="font-semibold text-red-600">
-              native UiPath packages
-            </span>
-            , which can then be deployed as a process — fully governed and
-            secured under the UiPath Platform.
-          </p>
+          
         </Card>
       </div>
     </section>

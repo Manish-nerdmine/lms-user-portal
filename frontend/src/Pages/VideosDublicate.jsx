@@ -4,6 +4,7 @@ import axios from "axios";
 import YouTube from "react-youtube";
 import { toast } from "react-toastify";
 import { Clock } from "lucide-react";
+import CodedAgentsYouTubePage from "../Components/CodedAgentsYouTubePage";
 
 export default function CoursePlayers() {
   const { courseId } = useParams();
@@ -246,6 +247,17 @@ export default function CoursePlayers() {
     formatDuration(totalVideoDuration)
   );
 
+  const stripHtml = (html) => {
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  return div.textContent;
+};
+localStorage.setItem(
+  `handleVideoComplete_${userId}_${courseId}_${activeItem?._id}`,
+  handleVideoComplete.toString()
+);
+
+
   return (
     <div className="h-screen w-full flex flex-col bg-gray-100">
       {/* Header */}
@@ -327,8 +339,8 @@ export default function CoursePlayers() {
                 >
                   <p className="text-sm font-medium truncate">
                     {item.type === "video"
-                      ? `Video: ${item.title}`
-                      : `Quiz: ${item.title}`}
+                      ? `Video: ${stripHtml(item.title)}`
+                      : `Quiz: ${stripHtml(item.title)}`}
                   </p>
                   {isCompleted && (
                     <span className="text-green-500 font-bold">✔</span>
@@ -346,7 +358,7 @@ export default function CoursePlayers() {
               <div className="flex flex-col flex-1 items-center justify-center">
                 <div className="bg-white rounded-lg shadow p-6 w-full max-w-3xl text-center">
                   <h2 className="text-2xl font-semibold mb-3 text-gray-800">
-                    {activeItem.title}
+                    {stripHtml(activeItem.title)}
                   </h2>
                   <p className="text-gray-600 mb-4">{activeItem.description}</p>
                   <p className="text-sm text-gray-500">
@@ -356,7 +368,7 @@ export default function CoursePlayers() {
 
                   <p className="mt-6 text-purple-900 font-semibold">
                     🎬 Video will be available on next page. (Click “Start
-                    {activeItem.title}” below)
+                    {stripHtml(activeItem.title)}” below)
                   </p>
 
                   <button
@@ -365,7 +377,7 @@ export default function CoursePlayers() {
                     }
                     className="mt-4 bg-purple-950 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
                   >
-                    Start {activeItem.title} Module
+                    Start {stripHtml(activeItem.title)} Module
                   </button>
                 </div>
               </div>

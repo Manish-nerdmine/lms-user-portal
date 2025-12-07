@@ -1,6 +1,14 @@
 import React from "react";
 
-const ThirdSection = ({ showThird }) => {
+const ThirdSection = ({ showThird, videoData }) => {
+  const stripHtml = (html) => {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent || "";
+  };
+
+  const info = videoData?.infoSections || [];
+
   return (
     <section
       id="section2"
@@ -8,51 +16,37 @@ const ThirdSection = ({ showThird }) => {
         showThird ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       }`}
     >
-      <hr className="w-full h-0.5 bg-gray-400 mt-12 max-w-5xl" />
-      <div className="max-w-4xl w-full flex flex-col items-start  p-6 sm:p-10">
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4">
-          What to expect from this Dev Dives session
-        </h2>
+      <div className="max-w-5xl w-full p-6 sm:p-10">
+        {/* ------ Only Info Section Dynamic Title & Description ------ */}
+        {info.length > 0 && (
+          <div className="flex flex-col gap-6">
+            {/* Section Title */}
+            <h2 className="text-2xl font-bold text-gray-900">
+              {stripHtml(info[0]?.sectionName || "What to expect from this Dev  session")}
+            </h2>
 
-        <p className="text-gray-700 leading-relaxed text-lg">
-          In this session, the UiPath product team demystifies{" "}
-          <span className="font-bold text-blue-400 text-lg">coded agents</span>{" "}
-          - what they are, why they matter, and how they power agentic
-          automation.
-        </p>
+            {/* Section Description List */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {info.map((item, index) => (
+                <div
+                  key={index}
+                  className="p-6 rounded-xl border border-gray-300 shadow-md bg-white"
+                >
+                  <h3 className="text-lg font-semibold text-blue-600 mb-2">
+                    {stripHtml(item.title)}
+                  </h3>
 
-        <p className="text-gray-700 leading-relaxed text-md mt-8 ">
-          At the end of this page, you'll also find the instructions for how to
-          put your skills to the test,{" "}
-          <span className="text-black font-semibold">
-            build a Specialist Coded Agent
-          </span>{" "}
-          with UiPath SDK & LangChain/LlamaIndex and compete for a share of{" "}
-          <span className="text-black font-semibold">$10,000 in prizes</span>
-        </p>
-
-        <p className="text-gray-700 leading-relaxed text-md mt-8 ">
-          You’ll learn about the{" "}
-          <span className="font-semibold text-black">languages</span> and{" "}
-          <span className="font-semibold text-black">frameworks</span> currently
-          supported by UiPath for development of coded agents, see
-          demonstrations of
-          <span className="font-semibold text-black">
-            autonomous payment
-          </span>{" "}
-          and{" "}
-          <span className="font-semibold text-black">
-            travel assistant agents
-          </span>{" "}
-          , and hear customer success stories showcasing the real-world impact
-          of coded agents.
-        </p>
-
-        <p className="text-black font-bold text-lg leading-relaxed  mt-8 ">
-          Here are the session highlights:
-        </p>
+                  <p className="text-gray-700 leading-relaxed">
+                    {stripHtml(item.content)}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
 };
+
 export default ThirdSection;

@@ -1,7 +1,14 @@
 import React from "react";
 import { FaArrowRight, FaTrophy, FaLaptopCode } from "react-icons/fa";
 
-const FirstSection = ({ handleScroll }) => {
+const FirstSection = ({ handleScroll, videoData }) => {
+  const stripHtml = (html) => {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent;
+  };
+
+  console.log("Video Data in FirstSection:", videoData);
   return (
     <section
       className="relative w-full h-screen bg-purple-900 text-white flex flex-col justify-center items-center px-10"
@@ -25,8 +32,11 @@ const FirstSection = ({ handleScroll }) => {
 
       {/* Hero Title */}
       <h1 className="text-5xl md:text-5xl font-bold leading-snug">
-        Dev Dives - Transform Workflows <br />
-        with UiPath Coded Agents
+        {videoData ? stripHtml(videoData.title) : "Loading..."}
+      </h1>
+
+      <h1 className="text-3xl md:text-3xl font-bold leading-snug">
+        {videoData ? stripHtml(videoData.subtitle || " ") : " "}
       </h1>
 
       {/* Arrow */}
@@ -38,6 +48,6 @@ const FirstSection = ({ handleScroll }) => {
       </button>
     </section>
   );
-}; 
+};
 
 export default FirstSection;

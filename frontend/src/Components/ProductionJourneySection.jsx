@@ -3,7 +3,7 @@ import { FaLaptopCode } from "react-icons/fa";
 import { FaSmile, FaCheckCircle, FaBoxOpen, FaCogs } from "react-icons/fa";
 import StepCard, { productionSteps } from "./StepCard";
 
-const ProductionJourneySection = () => {
+const ProductionJourneySection = ({videoData}) => {
   return (
     <div className="py-12 px-4 bg-gray-50 font-sans">
       <hr className="h-0.5 bg-gray-300 w-full max-w-5xl items-center text-center ml-60 mb-6" />
