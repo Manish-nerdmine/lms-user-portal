@@ -61,6 +61,7 @@ export default function NewVideos() {
           <ThirdSection showThird={true} videoData={videoData} />
           <CodedAgentsExamplesSection videoData={videoData} />
           <CodedAgentsYouTubePage videoData={videoData} />
+          
         </>
       )}
     </div>
