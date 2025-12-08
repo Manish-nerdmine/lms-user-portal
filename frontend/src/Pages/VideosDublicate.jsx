@@ -4,9 +4,9 @@ import axios from "axios";
 import YouTube from "react-youtube";
 import { toast } from "react-toastify";
 import { Clock } from "lucide-react";
+import CodedAgentsYouTubePage from "../Components/CodedAgentsYouTubePage";
 
-
-export default function CoursePlayer() {
+export default function CoursePlayers({ done }) {
   const { courseId } = useParams();
   const userId = localStorage.getItem("userId"); // currently logged-in user
   const employmentId = localStorage.getItem("employment");
@@ -247,6 +247,18 @@ export default function CoursePlayer() {
     formatDuration(totalVideoDuration)
   );
 
+  const stripHtml = (html) => {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent;
+  };
+  localStorage.setItem(
+    `handleVideoComplete_${userId}_${courseId}_${activeItem?._id}`,
+    handleVideoComplete.toString()
+  );
+
+  console.log("done value in course player:", done);
+
   return (
     <div className="h-screen w-full flex flex-col bg-gray-100">
       {/* Header */}
@@ -260,7 +272,7 @@ export default function CoursePlayer() {
         <div className="w-48">
           <div className="w-full bg-gray-200 h-2 rounded-full">
             <div
-              className="bg-blue-600 h-2 rounded-full transition-all"
+              className="bg-purple-950 h-2 rounded-full transition-all"
               style={{ width: `${Math.min(progress, 100)}%` }}
             />
           </div>
@@ -301,9 +313,15 @@ export default function CoursePlayer() {
 
               const handleClick = () => {
                 if (canOpen) {
-                  setActiveItem(item);
+                  if (item.type === "video") {
+                    // Navigate to new page for video
+                    navigate(`/course/${courseId}/video/${item._id}`);
+                  } else {
+                    // For quiz, stay on same page
+                    setActiveItem(item);
+                  }
                 } else {
-                  toast.warning("⚠️ Please complete previous module first!");
+                  toast.warning("⚠️ Pehle previous module complete karo!");
                 }
               };
 
@@ -314,7 +332,7 @@ export default function CoursePlayer() {
                   disabled={!canOpen}
                   className={`flex justify-between items-center px-3 py-2 rounded-md border transition ${
                     activeItem && activeItem._id === item._id
-                      ? "bg-blue-600 text-white shadow"
+                      ? "bg-purple-950 text-white shadow"
                       : canOpen
                       ? "bg-gray-50 hover:bg-gray-100"
                       : "bg-gray-200 cursor-not-allowed opacity-60"
@@ -322,8 +340,8 @@ export default function CoursePlayer() {
                 >
                   <p className="text-sm font-medium truncate">
                     {item.type === "video"
-                      ? `Video: ${item.title}`
-                      : `Quiz: ${item.title}`}
+                      ? `Video: ${stripHtml(item.title)}`
+                      : `Quiz: ${stripHtml(item.title)}`}
                   </p>
                   {isCompleted && (
                     <span className="text-green-500 font-bold">✔</span>
@@ -338,67 +356,38 @@ export default function CoursePlayer() {
         <main className="flex-1 h-full overflow-y-auto p-4 flex flex-col">
           {activeItem ? (
             activeItem.type === "video" ? (
-              <div className="flex flex-col flex-1">
-                <div className="flex-1 w-full rounded-lg overflow-hidden shadow bg-black">
-                  {getYouTubeId(activeItem.videoUrl) ? (
-                    <YouTube
-                      videoId={getYouTubeId(activeItem.videoUrl)}
-                      opts={{
-                        width: "100%",
-                        height: "100%",
-                        playerVars: { autoplay: 1, controls: 1 },
-                      }}
-                      className="w-full h-full"
-                      onReady={(e) => {
-                        const duration = e.target.getDuration(); // seconds
-                        setVideoDurations((prev) => ({
-                          ...prev,
-                          [activeItem._id]: duration,
-                        }));
-                      }}
-                      onEnd={() => handleVideoComplete(activeItem._id)}
-                    />
-                  ) : (
-                    <video
-                      key={activeItem._id}
-                      controls
-                      autoPlay
-                      className="w-full h-full object-cover"
-                      src={activeItem.videoUrl}
-                      poster={activeItem.thumbnail || ""}
-                      onLoadedMetadata={(e) => {
-                        const duration = e.target.duration; // seconds
-                        setVideoDurations((prev) => ({
-                          ...prev,
-                          [activeItem._id]: duration,
-                        }));
-                      }}
-                      onEnded={() => handleVideoComplete(activeItem._id)}
-                      onSeeked={(e) => {
-                        if (
-                          e.target.currentTime >
-                          (e.target.prevTime || 0) + 1
-                        ) {
-                          e.target.currentTime = e.target.prevTime || 0;
-                        }
-                      }}
-                      onTimeUpdate={(e) => {
-                        e.target.prevTime = e.target.currentTime;
-                      }}
-                      onKeyDown={(e) => e.preventDefault()}
-                    />
-                  )}
-                </div>
-
-                <div className="mt-4 bg-white rounded-lg shadow p-4">
-                  <h2 className="text-lg font-semibold mb-2">
-                    {activeItem.title}
+              <div className="flex flex-col flex-1 items-center justify-center">
+                <div className="bg-white rounded-lg shadow p-6 w-full max-w-3xl text-center">
+                  <h2 className="text-2xl font-semibold mb-3 text-gray-800">
+                    {stripHtml(activeItem.title)}
                   </h2>
-                  <p className="text-gray-600">{activeItem.description}</p>
-                  <p className="text-sm text-gray-500 mt-2">
-                    Uploaded:{" "}
+                  <p className="text-gray-600 mb-4">{activeItem.description}</p>
+                  <p className="text-sm text-gray-500">
+                    Uploaded on:{" "}
                     {new Date(activeItem.createdAt).toLocaleDateString()}
                   </p>
+
+                  <p className="mt-6 text-purple-900 font-semibold">
+                    🎬 Video will be available on next page. (Click “Start
+                    {stripHtml(activeItem.title)}” below)
+                  </p>
+
+                  <button
+                    onClick={() =>
+                      navigate(`/course/${courseId}/video/${activeItem._id}`)
+                    }
+                    className="mt-4 bg-purple-950 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
+                  >
+                    Start {stripHtml(activeItem.title)} Module
+                  </button>
+
+                  {/* Complete Module Button */}
+                  {done && (<button
+                    onClick={() => handleVideoComplete(activeItem._id)}
+                    className="mt-3 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
+                  >
+                    Complete {stripHtml(activeItem.title)} Module
+                  </button>)}
                 </div>
               </div>
             ) : (
@@ -440,7 +429,7 @@ export default function CoursePlayer() {
                           },
                         }))
                       }
-                      className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                      className="bg-purple-950 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
                     >
                       Start Quiz
                     </button>
@@ -547,7 +536,7 @@ export default function CoursePlayer() {
                                 [activeItem._id]: { started: true },
                               }))
                             }
-                            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                            className="bg-purple-950 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
                           >
                             Retake Quiz
                           </button>
@@ -562,7 +551,7 @@ export default function CoursePlayer() {
                       <h2 className="text-2xl font-semibold">
                         Course Assessment Quiz
                       </h2>
-                      <span className="bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded">
+                      <span className="bg-blue-100 text-purple-900 text-sm font-medium px-3 py-1 rounded">
                         {" "}
                         {Object.keys(quizSelections).length - 1}/{" "}
                         {activeItem.questions.length} Answered{" "}
@@ -575,7 +564,7 @@ export default function CoursePlayer() {
                         className="mb-6 border border-gray-200 rounded-lg p-4 bg-gray-50"
                       >
                         <p className="text-md font-semibold mb-3">
-                          <span className="text-blue-700 font-bold">
+                          <span className="text-purple-900 font-bold">
                             Question {idx + 1}:
                           </span>{" "}
                           {q.question}

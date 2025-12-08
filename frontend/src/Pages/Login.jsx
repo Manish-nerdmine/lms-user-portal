@@ -34,7 +34,7 @@ const LoginPage = ({ setGroupId , groupId,setIsAuthenticated }) => {
       setGroupId(response.data?.groupId);
       toast.success("Login successful!");
       localStorage.setItem("eId", response.data.employment);
-      localStorage.setItem("employment", response.data.employment);
+      localStorage.setItem("employment", response.data.employmentId);
       localStorage.setItem("userId", response.data.userId);
       setTimeout(() => navigate("/"), 1500);
     } catch (err) {

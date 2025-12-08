@@ -8,82 +8,72 @@ import axios from "axios";
 
 export default function Setting() {
   const navigate = useNavigate();
-  const gId= localStorage.getItem("groupId");
-  const userTypesinUpdate='67f92394d8650ede1e19015f';
-  const userId=localStorage.getItem("userId");
+  const gId = localStorage.getItem("groupId");
+  const userId = localStorage.getItem("userId");
+  const eId = localStorage.getItem("eId"); // Employment ID for password update
 
   // Profile States
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [jobTitle, setJobTitle] = useState("");
 
-
   // Password States
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const employmentid = localStorage.getItem("employment");
 
   // Fetch profile data on component mount
-useEffect(() => {
-  const fetchProfile = async () => {
-    try {
-      const eId = localStorage.getItem("eId");
-      console.log("Fetching profile for eId:", eId);
-      const uId= localStorage.getItem("uId");
-      console.log("Using uId:", uId);
-      console.log("Using gId:", gId);
-      console.log("eid:", eId); 
-      console.log(localStorage.getItem("userId"));
-      console.log("Using userTypesinUpdate:", userTypesinUpdate);
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        console.log("Fetching profile for userId:", userId);
 
-      // 1. Fetch current user's employment profile (optional, as before)
-      const response = await axios.get(
-        `http://195.35.21.108:3002/auth/api/v1/users/${userId}`
-      );
-      const employment = response.data;
-      console.log("Employment Profile Response:", employment);
-      if (employment) {
-        setFullName(employment.fullName || "");
-        setEmail(employment.email || "");
-        setJobTitle(employment.userType || "");
-        localStorage.setItem("fullName",employment.fullName);
-        console.log(localStorage.getItem("fullName"));
+        // 1. Fetch current user's profile
+        const response = await axios.get(
+          `http://195.35.21.108:3002/auth/api/v1/employment/${employmentid}`
+        );
+        const employment = response.data;
+        console.log("Employment Profile Response:", employment);
+
+        if (employment) {
+          setFullName(employment.fullName || "");
+          setEmail(employment.email || "");
+          setJobTitle(employment.role || "");
+          localStorage.setItem(`fullName_${userId}`, employment.fullName);
+        }
+
+        // 2. Fetch all users (to match ID if needed)
+        const allUsersRes = await axios.get(
+          "http://195.35.21.108:3002/auth/api/v1/users/all?page=1&limit=1000000000000000000"
+        );
+        const allUsers = allUsersRes.data.users || [];
+        const matchedUser = allUsers.find(
+          (user) => user.email === employment.email
+        );
+
+        if (matchedUser) {
+          localStorage.setItem("uId", matchedUser._id);
+          console.log("Stored uId:", matchedUser._id);
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+        toast.error("Failed to load profile data!");
       }
+    };
 
-      // 2. Fetch all users
-      const allUsersRes = await axios.get(
-        "http://195.35.21.108:3002/auth/api/v1/users/all?page=1&limit=1000000000000000000"
-      );
-      const allUsers = allUsersRes.data.users || [];
-
-      // 3. Find the user whose email matches the logged-in email
-      const matchedUser = allUsers.find((user) => user.email === employment.email);
-
-      if (matchedUser) {
-        console.log("Matched User Full Data:", matchedUser);
-        console.log("Matched User ID:", matchedUser._id);
-        localStorage.setItem("uId", matchedUser._id);
-        console.log("Stored uId in localStorage:", localStorage.getItem("uId"));
-      } else {
-        console.log("No user matched with email:", employment.email);
-      }
-    } catch (error) {
-      console.error("Error fetching profile or users:", error);
-      toast.error("Failed to load profile data!");
-    }
-  };
-
-  fetchProfile();
-}, []);
-
+    fetchProfile();
+  }, []);
 
   // Save Profile Info
-const handleSaveProfile = async () => {
+  const handleSaveProfile = async () => {
     const uId = localStorage.getItem("uId");
+
     if (!fullName || !email || !jobTitle) {
       toast.error("Please fill all profile fields");
       return;
     }
+
     if (!uId) {
       toast.error("User ID not found!");
       return;
@@ -91,14 +81,14 @@ const handleSaveProfile = async () => {
 
     try {
       const payload = {
-        userType: userTypesinUpdate,
+        role: jobTitle,
         fullName: fullName,
         email: email,
         groupId: gId,
       };
 
       const updateRes = await axios.put(
-        `http://195.35.21.108:3002/auth/api/v1/users/${userId}`,
+        `http://195.35.21.108:3002/auth/api/v1/employment/${employmentid}`,
         payload
       );
 
@@ -111,20 +101,49 @@ const handleSaveProfile = async () => {
     }
   };
 
-  // Change Password
-  const handleChangePassword = () => {
+  const employmentId = localStorage.getItem("employment");
+  //  Change Password Function (API integrated)
+  const handleChangePassword = async () => {
+    console.log("employee", employmentId);
     if (!oldPassword || !newPassword || !confirmPassword) {
       toast.error("Please fill in all password fields");
       return;
     }
+    const strongPasswordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (!strongPasswordRegex.test(newPassword)) {
+      toast.error(
+        "Password must have at least 8 characters, including 1 uppercase, 1 lowercase, 1 number, and 1 special symbol"
+      );
+      return;
+    }
+
     if (newPassword !== confirmPassword) {
       toast.error("New passwords do not match");
       return;
     }
-    toast.success("Password changed successfully!");
-    setOldPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
+
+    try {
+      console.log("Changing password for eId:", eId);
+      const response = await axios.patch(
+        `http://195.35.21.108:3002/auth/api/v1/employment/${employmentId}/update-password`,
+        {
+          currentPassword: oldPassword,
+          newPassword: newPassword,
+        }
+      );
+
+      console.log("Password change response:", response.data);
+      toast.success("New Password has been updated successfully!");
+      setOldPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      console.error("Error changing password:", error);
+      const msg = error.response?.data?.message || "Failed to change password!";
+      toast.error(msg);
+    }
   };
 
   return (
@@ -155,7 +174,6 @@ const handleSaveProfile = async () => {
               type="text"
               placeholder="Full Name"
               value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
               className="border rounded-md px-3 py-2 w-full shadow-sm focus:ring-2 focus:ring-purple-500 outline-none"
             />
             <div className="flex items-center border rounded-md px-3 py-2 shadow-sm focus-within:ring-2 focus-within:ring-purple-500">
@@ -164,7 +182,6 @@ const handleSaveProfile = async () => {
                 type="email"
                 placeholder="Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 className="w-full outline-none"
               />
             </div>
@@ -173,7 +190,7 @@ const handleSaveProfile = async () => {
               <input
                 type="text"
                 placeholder="Job Title"
-                value="User"
+                value={jobTitle}
                 onChange={(e) => setJobTitle(e.target.value)}
                 className="w-full outline-none"
               />
@@ -181,7 +198,7 @@ const handleSaveProfile = async () => {
           </div>
 
           <button
-            className="mt-6 bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow"
+            className="mt-6 bg-purple-900 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow"
             onClick={handleSaveProfile}
           >
             Save Changes
@@ -206,12 +223,14 @@ const handleSaveProfile = async () => {
             <input
               type="password"
               placeholder="New Password"
+              minLength={8}
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               className="border rounded-md px-3 py-2 w-full shadow-sm focus:ring-2 focus:ring-purple-500 outline-none"
             />
             <input
               type="password"
+              minLength={8}
               placeholder="Confirm New Password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -221,7 +240,7 @@ const handleSaveProfile = async () => {
             <div className="flex justify-end">
               <button
                 onClick={handleChangePassword}
-                className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow transition"
+                className="bg-purple-900 text-white px-4 py-2 rounded-md hover:bg-purple-700 shadow transition"
               >
                 Update Password
               </button>
@@ -231,4 +250,4 @@ const handleSaveProfile = async () => {
       </div>
     </main>
   );
-} 
+}

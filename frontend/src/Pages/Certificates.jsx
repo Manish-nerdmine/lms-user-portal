@@ -9,6 +9,7 @@ import Certificate from "../Components/Certificate";
 const Certificates = ({ overdueCourses }) => {
   const [activeCourse, setActiveCourse] = useState(null);
   const certificateRefs = useRef([]);
+  
 
   // Single certificate download
   const handleDownload = async (course) => {
@@ -49,7 +50,7 @@ const Certificates = ({ overdueCourses }) => {
 
       const pdf = new jsPDF("landscape", "px", [canvas.width, canvas.height]);
       pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
-      pdf.save(`Certificate_${overdueCourses[i]?.studentName || i + 1}.pdf`);
+      pdf.save(`${overdueCourses[i]?.courseDetails.title}-Certificate_${overdueCourses[i]?.studentName || i + 1}.pdf`);
     }
   };
 
@@ -62,7 +63,7 @@ const Certificates = ({ overdueCourses }) => {
 
           <button
             onClick={downloadAllCertificates}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition"
+            className="flex items-center gap-2 bg-purple-950 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition"
           >
             <FiDownload />
             Download All
@@ -72,7 +73,9 @@ const Certificates = ({ overdueCourses }) => {
         {/* Certificate List */}
         <div className="space-y-3">
           {overdueCourses?.length === 0 ? (
-            <p className="text-gray-500 text-center">No certificates available yet.</p>
+            <p className="text-gray-500 text-center">
+              No certificates available yet.
+            </p>
           ) : (
             overdueCourses.map((course) => (
               <div
@@ -82,14 +85,18 @@ const Certificates = ({ overdueCourses }) => {
                 <div className="flex items-center gap-3">
                   <FiAward className="text-blue-600 text-xl" />
                   <div>
-                    <h3 className="text-gray-900 font-medium">{course.courseDetails.title}</h3>
-                    <p className="text-gray-500 text-sm">Completed on {course.completedDate}</p>
+                    <h3 className="text-gray-900 font-medium">
+                      {course.courseDetails.title}
+                    </h3>
+                    <p className="text-gray-500 text-sm">
+                      Completed on {course.completedDate}
+                    </p>
                   </div>
                 </div>
 
                 <button
                   onClick={() => handleDownload(course)}
-                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition"
+                  className="flex items-center gap-2 bg-purple-950 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition"
                 >
                   <FiDownload />
                   Download
@@ -103,15 +110,22 @@ const Certificates = ({ overdueCourses }) => {
       {/* Invisible Certificates for All Download */}
       <div
         style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          opacity: 0,
-          pointerEvents: "none",
-        }}
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            opacity: 0,
+            pointerEvents: "none",
+            background: "transparent",
+            overflow: "hidden",
+          }}
       >
         {overdueCourses.map((course, index) => (
-          <div key={course.courseId} ref={(el) => (certificateRefs.current[index] = el)}>
+          <div
+            key={course.courseId}
+            ref={(el) => (certificateRefs.current[index] = el)}
+          >
             <Certificate course={course} elementId={`cert-${index}`} />
           </div>
         ))}
@@ -121,11 +135,15 @@ const Certificates = ({ overdueCourses }) => {
       {activeCourse && (
         <div
           style={{
-            position: "fixed",
-            top: "50px",
-            left: "50px",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
             opacity: 0,
             pointerEvents: "none",
+            background: "transparent",
+            overflow: "hidden",
           }}
         >
           <Certificate course={activeCourse} elementId="active-certificate" />

@@ -13,6 +13,8 @@ import "react-toastify/dist/ReactToastify.css";
 import CoursePlayer from "./Pages/videos"; 
 import Certificates from "./Pages/Certificates"; 
 import Certificate from "./Components/Certificate"; 
+import CoursePlayers from "./Pages/VideosDublicate";
+import NewVideos from "./Components/NewVideos";
 
 const App = () => { 
   const [isAuthenticated, setIsAuthenticated] = useState(false); 
@@ -20,7 +22,9 @@ const App = () => {
   const [overdueCourses, setOverdueCourses] = useState([]); 
   const [loading, setLoading] = useState(true); //  added loading state 
   const [completedCourses, setCompletedCourses] = useState([]); 
+  const [done, setDone] = useState(false);
   const location = useLocation(); 
+  const [courses, setCourses] = useState([]); 
 
   useEffect(() => { 
     const token = localStorage.getItem("token"); 
@@ -65,7 +69,7 @@ const App = () => {
           {/* Private Routes */} 
           {isAuthenticated ? ( 
             <> 
-              <Route path="/" element={<Dashboard />} /> 
+              <Route path="/" element={<Dashboard  completedCourses={completedCourses} overdueCourses={overdueCourses} courses={courses} setCompletedCourses={setCompletedCourses} setOverdueCourses={setOverdueCourses} setCourses={setCourses}/>} /> 
               <Route 
                 path="/todo-training" 
                 element={ 
@@ -74,7 +78,9 @@ const App = () => {
                     overdueCourses={overdueCourses} 
                     setOverdueCourses={setOverdueCourses} 
                     completedCourses={completedCourses} 
-                    setCompletedCourses={setCompletedCourses} 
+                    setCompletedCourses={setCompletedCourses}
+                    courses={courses}
+                    setCourses={setCourses} 
                   /> 
                 } 
               /> 
@@ -84,8 +90,9 @@ const App = () => {
               /> 
               <Route path="/complete-training" element={<Complete completedTrainings={completedCourses}/>} /> 
               <Route path="/setting" element={<Setting />} /> 
-              <Route path="/videos/:courseId" element={<CoursePlayer />} /> 
-              <Route path="/certificates" element={<Certificates overdueCourses={overdueCourses}/>} /> 
+              <Route path="/videos/:courseId" element={<CoursePlayers done={done} setDone={setDone}/>} />
+              <Route path="/course/:courseId/video/:videoId" element={<NewVideos done={done} setDone={setDone}/>} /> 
+              <Route path="/certificates" element={<Certificates overdueCourses={completedCourses}/>} /> 
             </> 
           ) : ( 
             <Route path="*" element={<Navigate to="/signup" replace />} /> 
