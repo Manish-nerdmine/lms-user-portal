@@ -3,7 +3,7 @@ import YouTube from "react-youtube";
 import AccordionItem from "./AccordionItem";
 import { useNavigate } from "react-router-dom";
 
-const CodedAgentsYouTubePage = ({ videoData }) => {
+const CodedAgentsYouTubePage = ({ videoData, done, setDone }) => {
   // -------------------------------
   // FUNCTION: Extract YouTube Video ID
   // -------------------------------
@@ -129,7 +129,7 @@ const CodedAgentsYouTubePage = ({ videoData }) => {
 
       <div className=" bg-gray-100/50 flex gap-5 items-center justify-center pb-16 mt-10">
 
-        <button className="bg-green-600 hover:bg-green-400 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 uppercase tracking-wider text-sm">Complete Module</button>
+        <button className="bg-green-600 hover:bg-green-400 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 uppercase tracking-wider text-sm" onClick={()=>setDone(true)}>Done</button>
 
         {/* Close Session Button */}
         <button

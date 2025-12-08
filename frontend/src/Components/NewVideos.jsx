@@ -10,7 +10,7 @@ import UiPathExitScreen from "./UiPathExitScreen";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-export default function NewVideos() {
+export default function NewVideos({done, setDone}) {
   const [unlocked, setUnlocked] = useState(false); //  Initially locked
   const [videoData, setVideoData] = useState(null); // API data
   const { courseId, videoId } = useParams();
@@ -46,6 +46,7 @@ export default function NewVideos() {
   }, [courseId, videoId]);
 
   console.log("Video Data:", videoData);
+  console.log("Done prop:", done);
 
 
   return (
@@ -60,7 +61,7 @@ export default function NewVideos() {
           <SecondSection showSecond={true} videoData={videoData} />
           <ThirdSection showThird={true} videoData={videoData} />
           <CodedAgentsExamplesSection videoData={videoData} />
-          <CodedAgentsYouTubePage videoData={videoData} />
+          <CodedAgentsYouTubePage videoData={videoData}  done={done} setDone={setDone}/>
           
         </>
       )}

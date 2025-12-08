@@ -22,6 +22,7 @@ const App = () => {
   const [overdueCourses, setOverdueCourses] = useState([]); 
   const [loading, setLoading] = useState(true); //  added loading state 
   const [completedCourses, setCompletedCourses] = useState([]); 
+  const [done, setDone] = useState(false);
   const location = useLocation(); 
   const [courses, setCourses] = useState([]); 
 
@@ -89,8 +90,8 @@ const App = () => {
               /> 
               <Route path="/complete-training" element={<Complete completedTrainings={completedCourses}/>} /> 
               <Route path="/setting" element={<Setting />} /> 
-              <Route path="/videos/:courseId" element={<CoursePlayers />} />
-              <Route path="/course/:courseId/video/:videoId" element={<NewVideos />} /> 
+              <Route path="/videos/:courseId" element={<CoursePlayers done={done} setDone={setDone}/>} />
+              <Route path="/course/:courseId/video/:videoId" element={<NewVideos done={done} setDone={setDone}/>} /> 
               <Route path="/certificates" element={<Certificates overdueCourses={completedCourses}/>} /> 
             </> 
           ) : ( 

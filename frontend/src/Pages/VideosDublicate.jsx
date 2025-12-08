@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { Clock } from "lucide-react";
 import CodedAgentsYouTubePage from "../Components/CodedAgentsYouTubePage";
 
-export default function CoursePlayers() {
+export default function CoursePlayers({ done }) {
   const { courseId } = useParams();
   const userId = localStorage.getItem("userId"); // currently logged-in user
   const employmentId = localStorage.getItem("employment");
@@ -248,15 +248,16 @@ export default function CoursePlayers() {
   );
 
   const stripHtml = (html) => {
-  const div = document.createElement("div");
-  div.innerHTML = html;
-  return div.textContent;
-};
-localStorage.setItem(
-  `handleVideoComplete_${userId}_${courseId}_${activeItem?._id}`,
-  handleVideoComplete.toString()
-);
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent;
+  };
+  localStorage.setItem(
+    `handleVideoComplete_${userId}_${courseId}_${activeItem?._id}`,
+    handleVideoComplete.toString()
+  );
 
+  console.log("done value in course player:", done);
 
   return (
     <div className="h-screen w-full flex flex-col bg-gray-100">
@@ -379,6 +380,14 @@ localStorage.setItem(
                   >
                     Start {stripHtml(activeItem.title)} Module
                   </button>
+
+                  {/* Complete Module Button */}
+                  {done && (<button
+                    onClick={() => handleVideoComplete(activeItem._id)}
+                    className="mt-3 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
+                  >
+                    Complete {stripHtml(activeItem.title)} Module
+                  </button>)}
                 </div>
               </div>
             ) : (
