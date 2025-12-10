@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { Clock } from "lucide-react";
 import CodedAgentsYouTubePage from "../Components/CodedAgentsYouTubePage";
 
-export default function CoursePlayers({ done }) {
+export default function CoursePlayers({ done, setDone }) {
   const { courseId } = useParams();
   const userId = localStorage.getItem("userId"); // currently logged-in user
   const employmentId = localStorage.getItem("employment");
@@ -357,37 +357,32 @@ export default function CoursePlayers({ done }) {
           {activeItem ? (
             activeItem.type === "video" ? (
               <div className="flex flex-col flex-1 items-center justify-center">
-                <div className="bg-white rounded-lg shadow p-6 w-full max-w-3xl text-center">
-                  <h2 className="text-2xl font-semibold mb-3 text-gray-800">
-                    {stripHtml(activeItem.title)}
+                <div className="bg-white rounded-lg shadow p-6 w-full max-w-3xl text-center h-[20rem]">
+                  <h2 className="text-2xl font-semibold mb-3 text-gray-800 mt-20">
+                    **{stripHtml(activeItem.title)}**
                   </h2>
-                  <p className="text-gray-600 mb-4">{activeItem.description}</p>
-                  <p className="text-sm text-gray-500">
-                    Uploaded on:{" "}
-                    {new Date(activeItem.createdAt).toLocaleDateString()}
-                  </p>
-
-                  <p className="mt-6 text-purple-900 font-semibold">
-                    🎬 Video will be available on next page. (Click “Start
-                    {stripHtml(activeItem.title)}” below)
-                  </p>
 
                   <button
-                    onClick={() =>
-                      navigate(`/course/${courseId}/video/${activeItem._id}`)
-                    }
+                    onClick={() => {
+                      navigate(`/course/${courseId}/video/${activeItem._id}`),
+                        setDone(false);
+                    }}
                     className="mt-4 bg-purple-950 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
                   >
                     Start {stripHtml(activeItem.title)} Module
                   </button>
 
-                  {/* Complete Module Button */}
-                  {done && (<button
-                    onClick={() => handleVideoComplete(activeItem._id)}
-                    className="mt-3 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
-                  >
-                    Complete {stripHtml(activeItem.title)} Module
-                  </button>)}
+                  {/* Mark Complete Button - Right Side */}
+                  {done && (
+                    <div className="w-full flex justify-end mt-[4.5rem] ml-3">
+                      <button
+                        onClick={() =>{ handleVideoComplete(activeItem._id), setDone(false)}}
+                        className="mt-3 bg-green-600 text-white px-2 py-1 rounded-lg hover:bg-green-700 transition text-xs"
+                      >
+                        Mark as Complete
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             ) : (
