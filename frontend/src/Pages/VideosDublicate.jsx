@@ -5,6 +5,7 @@ import YouTube from "react-youtube";
 import { toast } from "react-toastify";
 import { Clock } from "lucide-react";
 import CodedAgentsYouTubePage from "../Components/CodedAgentsYouTubePage";
+import { BookOpen } from "lucide-react";
 
 export default function CoursePlayers({ done, setDone }) {
   const { courseId } = useParams();
@@ -357,33 +358,49 @@ export default function CoursePlayers({ done, setDone }) {
           {activeItem ? (
             activeItem.type === "video" ? (
               <div className="flex flex-col flex-1 items-center justify-center">
-                <div className="bg-white rounded-lg shadow p-6 w-full max-w-3xl text-center h-[20rem]">
-                  <h2 className="text-2xl font-semibold mb-3 text-gray-800 mt-20">
-                    **{stripHtml(activeItem.title)}**
+                <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl shadow-lg p-8 w-full max-w-3xl text-center border border-purple-200 border-b-4 border-b-purple-400">
+                  {/* Top Icon */}
+                  <div className="mx-auto w-16 h-16 bg-purple-200 flex items-center justify-center rounded-2xl mb-4">
+                    <BookOpen className="text-purple-900 w-8 h-8" />
+                  </div>
+
+                  {/* Title */}
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-3">
+                    {stripHtml(activeItem.title)}
                   </h2>
 
+                  {/* Description */}
+                  <p className="text-gray-600 max-w-xl mx-auto leading-relaxed">
+                    {stripHtml(activeItem.subtittle || " ")}
+                  </p>
+
+                  {/* Start Button */}
                   <button
                     onClick={() => {
-                      navigate(`/course/${courseId}/video/${activeItem._id}`),
-                        setDone(false);
+                      navigate(`/course/${courseId}/video/${activeItem._id}`);
+                      setDone(false);
                     }}
-                    className="mt-4 bg-purple-950 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
+                    className="mt-6 bg-purple-900 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
                   >
                     Start {stripHtml(activeItem.title)} Module
                   </button>
-
-                  {/* Mark Complete Button - Right Side */}
-                  {done && (
-                    <div className="w-full flex justify-end mt-[4.5rem] ml-3">
-                      <button
-                        onClick={() =>{ handleVideoComplete(activeItem._id), setDone(false)}}
-                        className="mt-3 bg-green-600 text-white px-2 py-1 rounded-lg hover:bg-green-700 transition text-xs"
-                      >
-                        Mark as Complete
-                      </button>
-                    </div>
-                  )}
                 </div>
+
+                <hr className="my-6 w-full max-w-3xl border-t border-gray-300" />
+                {/* Right-Side Mark Complete */}
+                {done && (
+                  <div className="w-full flex justify-end mr-60">
+                    <button
+                      onClick={() => {
+                        handleVideoComplete(activeItem._id);
+                        setDone(false);
+                      }}
+                      className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition text-md"
+                    >
+                      Mark as Complete
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="bg-white rounded-lg shadow p-6 w-full">
