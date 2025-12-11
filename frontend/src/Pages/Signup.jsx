@@ -7,6 +7,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import logo from "./logo1.png";
+import bg from "./bg.jpg";
 
 const Sign = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -108,11 +110,11 @@ const Sign = () => {
   }, [navigate]);
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#f5f7fb]">
+    <div className="flex justify-center items-center min-h-screen bg-cover bg-center" style={{ backgroundImage: `url(${bg})` }}>
       <ToastContainer position="top-right" autoClose={3000} />
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-md overflow-hidden">
+      <div className="w-full max-w-md bg-[#013f63] rounded-2xl shadow-md overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-center">
+        <div className="bg-gradient-to-r from-purple-600 to-purple-900 p-6 text-center">
           <div className="flex justify-center mb-2">
             <LuBookOpen className="text-white text-3xl" />
           </div>
@@ -122,13 +124,13 @@ const Sign = () => {
 
         {/* Form */}
         <form className="p-6 space-y-4" onSubmit={handleSubmit}>
-          <p className="text-xs font-semibold text-gray-500">
+          <p className="text-xs font-semibold text-gray-200">
             EMPLOYEE INFORMATION
           </p>
 
           {/* Full Name */}
           <div>
-            <label className="flex items-center text-sm font-medium text-gray-700 mb-1 space-x-1">
+            <label className="flex items-center text-sm font-medium text-gray-400 mb-1 space-x-1">
               <FaUserAlt className="text-gray-500" />
               <span>Full Name</span>
             </label>
@@ -136,14 +138,14 @@ const Sign = () => {
               type="text"
               value={fullName}
               readOnly
-              className="w-full border rounded-lg px-3 py-2 text-sm outline-none"
+              className="w-full border rounded-lg px-3 py-2 text-sm outline-none bg-[#013f63] text-white"
               placeholder="Enter your full name"
             />
           </div>
 
           {/* Email */}
           <div>
-            <label className="flex items-center text-sm font-medium text-gray-700 mb-1 space-x-1">
+            <label className="flex items-center text-sm font-medium text-gray-400 mb-1 space-x-1">
               <MdEmail className="text-gray-500" />
               <span>Email Address</span>
             </label>
@@ -152,13 +154,13 @@ const Sign = () => {
               value={email}
               readOnly
               placeholder="john.smith@company.com"
-              className="w-full border rounded-lg px-3 py-2 text-sm outline-none"
+              className="w-full border rounded-lg px-3 py-2 text-sm outline-none bg-[#013f63] text-white"
             />
           </div>
 
           {/* Role as Text Input */}
           <div>
-            <label className="flex items-center text-sm font-medium text-gray-700 mb-1 space-x-1">
+            <label className="flex items-center text-sm font-medium text-gray-400 mb-1 space-x-1">
               <MdWork className="text-gray-500" />
               <span>Role</span>
             </label>
@@ -167,17 +169,17 @@ const Sign = () => {
               value={role}
               readOnly
               placeholder="Enter your role (e.g. admin, user, soft)"
-              className="w-full border rounded-lg px-3 py-2 text-sm outline-none"
+              className="w-full border rounded-lg px-3 py-2 text-sm outline-none bg-[#013f63] text-white"
             />
           </div>
 
-          <p className="text-xs font-semibold text-gray-500 mt-6">
+          <p className="text-xs font-semibold text-gray-200 mt-6">
             ACCOUNT SECURITY
           </p>
 
           {/* Password */}
           <div>
-            <label className="flex items-center text-sm font-medium text-gray-700 mb-1 space-x-1">
+            <label className="flex items-center text-sm font-medium text-gray-400 mb-1 space-x-1">
               <FaLock className="text-gray-500" />
               <span>Password</span>
             </label>
@@ -187,7 +189,7 @@ const Sign = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="w-full outline-none text-sm"
+                className="w-full outline-none text-sm bg-[#013f63] text-white"
               />
               <button
                 type="button"
@@ -201,7 +203,7 @@ const Sign = () => {
 
           {/* Confirm Password */}
           <div>
-            <label className="flex items-center text-sm font-medium text-gray-700 mb-1 space-x-1">
+            <label className="flex items-center text-sm font-medium text-gray-400 mb-1 space-x-1">
               <FaLock className="text-gray-500" />
               <span>Confirm Password</span>
             </label>
@@ -211,7 +213,7 @@ const Sign = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm your password"
-                className="w-full outline-none text-sm"
+                className="w-full outline-none text-sm bg-[#013f63] text-white"
               />
               <button
                 type="button"
@@ -231,7 +233,7 @@ const Sign = () => {
               onChange={() => setAgree(!agree)}
               className="mt-1"
             />
-            <p className="text-gray-600">
+            <p className="text-gray-400">
               I agree to the{" "}
               <a href="#" className="text-blue-600 underline">
                 Terms of Service
@@ -249,7 +251,7 @@ const Sign = () => {
             disabled={!agree}
             className={`w-full font-medium py-2 rounded-lg mt-2 ${
               agree
-                ? "bg-blue-600 text-white hover:bg-blue-700 transition"
+                ? "bg-purple-900 text-white hover:bg-purple-700 transition"
                 : "bg-gray-300 text-gray-600 cursor-not-allowed"
             }`}
           >
@@ -257,7 +259,7 @@ const Sign = () => {
           </button>
 
           {/* Support */}
-          <p className="text-center text-sm text-gray-500 mt-4">
+          <p className="text-center text-sm text-gray-400 mt-4">
             Already have an account?{" "}
             <span
               onClick={() => navigate("/login")}
@@ -266,7 +268,7 @@ const Sign = () => {
               Log in
             </span>
           </p>
-          <p className="text-center text-sm text-gray-500 mt-2">
+          <p className="text-center text-sm text-gray-400 mt-2">
             Need help?{" "}
             <a href="#" className="text-blue-600 underline">
               Contact IT Support
