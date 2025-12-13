@@ -12,6 +12,8 @@ const Certificate = ({ course, elementId }) => {
   );
 
   const userId=localStorage.getItem("userId");
+  const userName=localStorage.getItem(`fullName_${userId}`);
+  console.log("Generating certificate for:", userName);
 
   
   return (

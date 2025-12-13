@@ -5,8 +5,9 @@ import YouTube from "react-youtube";
 import { toast } from "react-toastify";
 import { Clock } from "lucide-react";
 import CodedAgentsYouTubePage from "../Components/CodedAgentsYouTubePage";
+import { BookOpen } from "lucide-react";
 
-export default function CoursePlayers({ done }) {
+export default function CoursePlayers({ done, setDone }) {
   const { courseId } = useParams();
   const userId = localStorage.getItem("userId"); // currently logged-in user
   const employmentId = localStorage.getItem("employment");
@@ -357,38 +358,49 @@ export default function CoursePlayers({ done }) {
           {activeItem ? (
             activeItem.type === "video" ? (
               <div className="flex flex-col flex-1 items-center justify-center">
-                <div className="bg-white rounded-lg shadow p-6 w-full max-w-3xl text-center">
-                  <h2 className="text-2xl font-semibold mb-3 text-gray-800">
+                <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl shadow-lg p-8 w-full max-w-3xl text-center border border-purple-200 border-b-4 border-b-purple-400">
+                  {/* Top Icon */}
+                  <div className="mx-auto w-16 h-16 bg-purple-200 flex items-center justify-center rounded-2xl mb-4">
+                    <BookOpen className="text-purple-900 w-8 h-8" />
+                  </div>
+
+                  {/* Title */}
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-3">
                     {stripHtml(activeItem.title)}
                   </h2>
-                  <p className="text-gray-600 mb-4">{activeItem.description}</p>
-                  <p className="text-sm text-gray-500">
-                    Uploaded on:{" "}
-                    {new Date(activeItem.createdAt).toLocaleDateString()}
+
+                  {/* Description */}
+                  <p className="text-gray-600 max-w-xl mx-auto leading-relaxed">
+                    {stripHtml(activeItem.subtittle || " ")}
                   </p>
 
-                  <p className="mt-6 text-purple-900 font-semibold">
-                    🎬 Video will be available on next page. (Click “Start
-                    {stripHtml(activeItem.title)}” below)
-                  </p>
-
+                  {/* Start Button */}
                   <button
-                    onClick={() =>
-                      navigate(`/course/${courseId}/video/${activeItem._id}`)
-                    }
-                    className="mt-4 bg-purple-950 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
+                    onClick={() => {
+                      navigate(`/course/${courseId}/video/${activeItem._id}`);
+                      setDone(false);
+                    }}
+                    className="mt-6 bg-purple-900 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
                   >
                     Start {stripHtml(activeItem.title)} Module
                   </button>
-
-                  {/* Complete Module Button */}
-                  {done && (<button
-                    onClick={() => handleVideoComplete(activeItem._id)}
-                    className="mt-3 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
-                  >
-                    Complete {stripHtml(activeItem.title)} Module
-                  </button>)}
                 </div>
+
+                <hr className="my-6 w-full max-w-3xl border-t border-gray-300" />
+                {/* Right-Side Mark Complete */}
+                {done && (
+                  <div className="w-full flex justify-end mr-60">
+                    <button
+                      onClick={() => {
+                        handleVideoComplete(activeItem._id);
+                        setDone(false);
+                      }}
+                      className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition text-md"
+                    >
+                      Mark as Complete
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="bg-white rounded-lg shadow p-6 w-full">

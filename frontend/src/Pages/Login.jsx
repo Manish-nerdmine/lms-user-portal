@@ -4,8 +4,10 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import logo from "./logo1.png";
+import bg from "./bg.jpg";
 
-const LoginPage = ({ setGroupId , groupId,setIsAuthenticated }) => {
+const LoginPage = ({ setGroupId, groupId, setIsAuthenticated }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -39,7 +41,8 @@ const LoginPage = ({ setGroupId , groupId,setIsAuthenticated }) => {
       setTimeout(() => navigate("/"), 1500);
     } catch (err) {
       console.error(" Login Error:", err);
-      const msg = err.response?.data?.message || "Login failed! Please try again.";
+      const msg =
+        err.response?.data?.message || "Login failed! Please try again.";
       toast.error(Array.isArray(msg) ? msg.join("\n") : msg);
     } finally {
       setLoading(false);
@@ -47,13 +50,16 @@ const LoginPage = ({ setGroupId , groupId,setIsAuthenticated }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-blue-50">
+    <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-center"
+      style={{ backgroundImage: `url(${bg})` }}
+    >
       <ToastContainer position="top-right" autoClose={3000} />
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+      <div className="bg-[#013f63] p-8 rounded-lg shadow-md w-full max-w-md">
         {/* Logo + Title */}
-        <div className="flex flex-col items-center mb-6">
-          <h1 className="text-2xl font-bold text-blue-600">PhishFarm</h1>
-          <p className="text-gray-500 text-sm mt-1">
+        <div className="flex flex-col items-center gap-2 mb-6">
+          <img src={logo} alt="Logo" className="h-20 w-22" />
+          <p className="text-gray-200 text-sm mt-1">
             Sign in to access your PhishFarm account.
           </p>
         </div>
@@ -62,13 +68,15 @@ const LoginPage = ({ setGroupId , groupId,setIsAuthenticated }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-gray-400">
+              Email
+            </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email address"
-              className="mt-1 w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="mt-1 w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-[#013f63] text-white"
               required
             />
           </div>
@@ -76,7 +84,9 @@ const LoginPage = ({ setGroupId , groupId,setIsAuthenticated }) => {
           {/* Password */}
           <div>
             <div className="flex justify-between items-center">
-              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <label className="block text-sm font-medium text-gray-400">
+                Password
+              </label>
               <a href="#" className="text-sm text-blue-500 hover:underline">
                 Forgot Password?
               </a>
@@ -87,7 +97,7 @@ const LoginPage = ({ setGroupId , groupId,setIsAuthenticated }) => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="********"
-                className="mt-1 w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="mt-1 w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-[#013f63] text-white"
                 required
               />
               <button
@@ -104,7 +114,7 @@ const LoginPage = ({ setGroupId , groupId,setIsAuthenticated }) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-sky-400 hover:bg-sky-500 text-white font-medium py-2 rounded-md transition disabled:opacity-50"
+            className="w-full bg-purple-950 hover:bg-purple-700 text-white font-medium py-2 rounded-md transition disabled:opacity-50"
           >
             {loading ? "Signing In..." : "Sign In"}
           </button>

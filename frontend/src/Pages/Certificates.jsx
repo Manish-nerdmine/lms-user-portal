@@ -1,6 +1,6 @@
 // Certificates.jsx
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, use } from "react";
 import { FiAward, FiDownload } from "react-icons/fi";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
@@ -9,6 +9,8 @@ import Certificate from "../Components/Certificate";
 const Certificates = ({ overdueCourses }) => {
   const [activeCourse, setActiveCourse] = useState(null);
   const certificateRefs = useRef([]);
+  const userId=localStorage.getItem("userId");
+  const userName=localStorage.getItem(`fullName_${userId}`);
   
 
   // Single certificate download
@@ -30,7 +32,7 @@ const Certificates = ({ overdueCourses }) => {
       });
 
       pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
-      pdf.save(`${course.courseDetails.title}-Certificate.pdf`);
+      pdf.save(`${userName}_${course.courseDetails.title}_${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}-Certificate.pdf`);
 
       setActiveCourse(null);
     }, 200);
@@ -50,7 +52,7 @@ const Certificates = ({ overdueCourses }) => {
 
       const pdf = new jsPDF("landscape", "px", [canvas.width, canvas.height]);
       pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
-      pdf.save(`${overdueCourses[i]?.courseDetails.title}-Certificate_${overdueCourses[i]?.studentName || i + 1}.pdf`);
+      pdf.save(`${userName}_${overdueCourses[i]?.courseDetails.title}_${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}-Certificate_${overdueCourses[i]?.studentName || i + 1}.pdf`);
     }
   };
 

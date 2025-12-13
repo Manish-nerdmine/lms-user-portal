@@ -18,14 +18,7 @@ const CodedAgentsExamplesSection = ({videoData}) => {
       </div>
 
       <div className="max-w-2xl mx-auto mt-4 pt-8">
-        <div className="flex items-start bg-white p-4 border border-blue-300 rounded-lg shadow-inner">
-          <FaInfoCircle className="text-blue-500 text-xl mr-3 mt-1 flex-shrink-0" />
-          <p className="text-sm text-gray-700 leading-relaxed">
-            <span className="font-bold">Chapters</span> have been enabled for
-            this recording. To jump to a specific topic, simply hover over the
-            video timeline and select the chapter you want to view.
-          </p>
-        </div>
+        
       </div>
     </div>
   );
